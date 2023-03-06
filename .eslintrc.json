@@ -22,14 +22,14 @@
 		"@typescript-eslint/triple-slash-reference": "off",
 		"react/react-in-jsx-scope": "off",
 		"no-console": ["error", { "allow": ["error"] }],
-        "no-restricted-imports": "off",
-        "@typescript-eslint/no-restricted-imports": [
-            "error",
-            {
-                "name": "react-redux",
-                "importNames": ["useSelector", "useDispatch"],
-                "message": "Use typed hooks `useDispatch` and `useSelector` from ./store instead."
-            }
-        ]
+		"no-restricted-imports": "off",
+		"@typescript-eslint/no-restricted-imports": [
+			"error",
+			{
+				"name": "react-redux",
+				"importNames": ["useSelector", "useDispatch"],
+				"message": "Use typed hooks `useDispatch` and `useSelector` from ./store instead."
+			}
+		]
 	}
 }

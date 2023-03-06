@@ -15,7 +15,7 @@
 			"eslint",
 			"prettier --ignore-unknown --write"
 		],
-		"*.{css,scss}": [
+		"*.{json,css,scss}": [
 			"prettier --ignore-unknown --write"
 		]
 	},
