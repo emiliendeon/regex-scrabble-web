@@ -17,8 +17,8 @@ const WordSelectors = {
 			return null;
 		}
 
-		const prefixes1Regex = new RegExp(`^${Regex.prefix1(word)}$`);
-		const suffixes1Regex = new RegExp(`^${Regex.suffix1(word)}$`);
+		const prefixes1Regex = new RegExp(`^${Regex.prefix1(wordFormatted)}$`);
+		const suffixes1Regex = new RegExp(`^${Regex.suffix1(wordFormatted)}$`);
 
 		return {
 			word: wordFormatted,
