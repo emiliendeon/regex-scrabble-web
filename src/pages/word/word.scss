@@ -1,0 +1,76 @@
+#word {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+
+	h1 {
+		margin: 16px 0;
+		text-align: center;
+	}
+
+	.neighbors {
+		display: flex;
+		padding: 0 8px;
+
+		> * {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 8px;
+			padding: 8px;
+
+			h2 {
+				margin-bottom: 8px;
+				text-align: center;
+			}
+
+			ul {
+				padding: 0;
+				list-style-type: none;
+
+				li {
+					text-align: center;
+
+					em {
+						font-style: inherit;
+						font-weight: bold;
+					}
+				}
+			}
+
+			.none {
+				font-style: italic;
+			}
+		}
+
+		.prefixes {
+			background-color: #eeeeff;
+
+			ul {
+				li {
+					em {
+						color: #0000af;
+					}
+				}
+			}
+		}
+
+		.suffixes {
+			background-color: #eeffee;
+
+			ul {
+				li {
+					em {
+						color: #00af00;
+					}
+				}
+			}
+		}
+	}
+
+	.back-link {
+		align-self: center;
+		margin-top: 16px;
+	}
+}

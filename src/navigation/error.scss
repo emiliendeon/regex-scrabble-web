@@ -1,0 +1,21 @@
+#error {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	padding: 16px;
+
+	h1 {
+		text-align: center;
+
+		.word {
+			color: red;
+			text-transform: uppercase;
+		}
+	}
+
+	.back {
+		margin-top: 32px;
+	}
+}
