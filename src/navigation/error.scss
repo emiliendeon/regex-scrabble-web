@@ -15,7 +15,19 @@
 		}
 	}
 
-	.back {
-		margin-top: 32px;
+	.links {
+		align-self: center;
+		display: flex;
+		margin-top: 26px;
+
+		> * {
+			margin: 6px;
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		.links {
+			flex-direction: column;
+		}
 	}
 }

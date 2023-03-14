@@ -1,9 +1,11 @@
 import "./iconButton.scss";
 
 import { type ButtonProps } from "../button/Button";
+import Icon from "../../icon/Icon";
+import { type IconName } from "../../../types/icon";
 
 type IconButtonProps = ButtonProps & {
-	icon: "close";
+	icon: IconName;
 };
 
 const IconButton = ({ type, icon, label, onClick }: IconButtonProps) => {
@@ -17,7 +19,7 @@ const IconButton = ({ type, icon, label, onClick }: IconButtonProps) => {
 				}
 			}}
 		>
-			<img src={`/assets/icons/${icon}.png`} alt={label} title={label} />
+			<Icon name={icon} label={label} />
 		</button>
 	);
 };

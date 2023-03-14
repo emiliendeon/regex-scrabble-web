@@ -2,7 +2,11 @@ import "./backLink.scss";
 
 import { useNavigate } from "react-router-dom";
 
-const BackLink = () => {
+type BackLinkProps = {
+	label?: string;
+};
+
+const BackLink = ({ label }: BackLinkProps) => {
 	const navigate = useNavigate();
 
 	return (
@@ -13,7 +17,7 @@ const BackLink = () => {
 				navigate(-1);
 			}}
 		>
-			Retour
+			{label ?? "Retour"}
 		</button>
 	);
 };

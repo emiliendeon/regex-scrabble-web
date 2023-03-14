@@ -3,6 +3,8 @@ import "./word.scss";
 import { Link, Navigate, useParams } from "react-router-dom";
 
 import BackLink from "../../components/backLink/BackLink";
+import InvalidIcon from "../../components/icon/icons/InvalidIcon";
+import ValidIcon from "../../components/icon/icons/ValidIcon";
 import WordSelectors from "../../selectors/word";
 import { useSelector } from "../../store";
 
@@ -23,13 +25,13 @@ const Word = () => {
 					<h2>1-préfixes</h2>
 					{wordData.prefixes1.length >= 1 ? (
 						<ul>
-							{wordData.prefixes1.map((prefix) => (
-								<li key={`${prefix}${wordData.word}`}>
+							{wordData.prefixes1.map((prefixWord) => (
+								<li key={prefixWord.word}>
 									<Link
 										className="raw"
-										to={`/mot/${`${prefix}${wordData.word}`.toLowerCase()}`}
+										to={`/mot/${prefixWord.word.toLowerCase()}`}
 									>
-										<em>{prefix}</em>
+										<em>{prefixWord.prefix}</em>
 										{wordData.word}
 									</Link>
 								</li>
@@ -43,14 +45,14 @@ const Word = () => {
 					<h2>1-suffixes</h2>
 					{wordData.suffixes1.length >= 1 ? (
 						<ul>
-							{wordData.suffixes1.map((suffix) => (
-								<li key={`${wordData.word}${suffix}`}>
+							{wordData.suffixes1.map((suffixWord) => (
+								<li key={suffixWord.word}>
 									<Link
 										className="raw"
-										to={`/mot/${`${wordData.word}${suffix}`.toLowerCase()}`}
+										to={`/mot/${suffixWord.word.toLowerCase()}`}
 									>
 										{wordData.word}
-										<em>{suffix}</em>
+										<em>{suffixWord.suffix}</em>
 									</Link>
 								</li>
 							))}
@@ -59,8 +61,47 @@ const Word = () => {
 						<p className="none">Aucun</p>
 					)}
 				</div>
+				{wordData.word.length >= 3 && (
+					<>
+						<div className="prefix-of">
+							<h2>Préfixe de ?</h2>
+							<div className="item">
+								<Link
+									className="raw"
+									to={`/mot/${wordData.prefixOf.word.toLowerCase()}`}
+								>
+									{wordData.prefixOf.word}
+								</Link>
+								{wordData.prefixOf.valid ? (
+									<ValidIcon label="Oui" />
+								) : (
+									<InvalidIcon label="Non" />
+								)}
+							</div>
+						</div>
+						<div className="suffix-of">
+							<h2>Suffixe de ?</h2>
+							<div className="item">
+								<Link
+									className="raw"
+									to={`/mot/${wordData.suffixOf.word.toLowerCase()}`}
+								>
+									{wordData.suffixOf.word}
+								</Link>
+								{wordData.suffixOf.valid ? (
+									<ValidIcon label="Oui" />
+								) : (
+									<InvalidIcon label="Non" />
+								)}
+							</div>
+						</div>
+					</>
+				)}
 			</div>
-			<BackLink />
+			<div className="links">
+				<BackLink label="Précédent" />
+				<Link to="/">Retour au dictionnaire</Link>
+			</div>
 		</div>
 	);
 };

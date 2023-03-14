@@ -2,6 +2,7 @@ import "./error.scss";
 
 import { Link, useSearchParams } from "react-router-dom";
 
+import BackLink from "../components/backLink/BackLink";
 import { useMemo } from "react";
 
 const Error = () => {
@@ -23,9 +24,10 @@ const Error = () => {
 					"Page non trouvée"
 				)}
 			</h1>
-			<Link className="back" to="/">
-				Revenir à l&apos;accueil
-			</Link>
+			<div className="links">
+				<BackLink label="Retour à la page précédente" />
+				<Link to="/">Retour à l&apos;accueil</Link>
+			</div>
 		</div>
 	);
 };
