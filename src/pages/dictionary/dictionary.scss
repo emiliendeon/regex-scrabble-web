@@ -4,14 +4,17 @@
 	height: 100%;
 
 	.search {
+		flex: 0 0 auto;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
 		height: 64px;
-		background-color: #f7f7ff;
+		padding: 0 12px;
+		background-color: #4f3f6f;
 
-		.button {
-			margin-left: 8px;
+		> * {
+			margin: 0 4px;
 		}
 	}
 
@@ -19,14 +22,36 @@
 		box-sizing: border-box;
 		height: calc(100% - 64px);
 
+		.count {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 8px 0;
+		}
+
 		.lazy-list {
 			align-items: center;
 			height: 100%;
-			margin: -2px;
+			padding: 0 0 14px;
 
 			li {
 				margin: 2px;
 			}
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		.search {
+			align-content: center;
+			height: 112px;
+
+			> * {
+				margin: 8px 4px;
+			}
+		}
+
+		.result {
+			height: calc(100% - 112px);
 		}
 	}
 }

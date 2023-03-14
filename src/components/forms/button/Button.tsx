@@ -1,17 +1,20 @@
 import "./button.scss";
 
-interface ButtonProps {
+export type ButtonProps = {
+	type?: "button" | "submit";
 	label: string;
-	onClick: () => void;
-}
+	onClick?: () => void;
+};
 
-const Button = ({ label, onClick }: ButtonProps) => {
+const Button = ({ type, label, onClick }: ButtonProps) => {
 	return (
 		<button
-			type="button"
+			type={type ?? "button"}
 			className="button"
 			onClick={() => {
-				onClick();
+				if (onClick) {
+					onClick();
+				}
 			}}
 		>
 			{label}

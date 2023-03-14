@@ -1,8 +1,8 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export interface DictionaryStore {
+export type DictionaryStore = {
 	search: string;
-}
+};
 
 const initialState: DictionaryStore = {
 	search: "",
@@ -14,6 +14,9 @@ const DictionarySlice = createSlice({
 	reducers: {
 		setSearch: (state, { payload }: PayloadAction<DictionaryStore["search"]>) => {
 			state.search = payload;
+		},
+		resetSearch: (state) => {
+			state.search = initialState.search;
 		},
 	},
 });

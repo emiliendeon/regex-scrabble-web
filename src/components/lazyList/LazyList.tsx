@@ -4,12 +4,13 @@ import { useMemo, useRef, useState } from "react";
 
 type Item = string;
 
-interface LazyListProps {
+type LazyListProps = {
 	items: Item[];
+	headerComponent?: React.ComponentType;
 	itemRenderer?: React.ComponentType<{ item: Item }>;
-}
+};
 
-const LazyList = ({ items, itemRenderer }: LazyListProps) => {
+const LazyList = ({ items, headerComponent, itemRenderer }: LazyListProps) => {
 	const [displayedItemsCount, setDisplayedItemsCount] = useState(100);
 
 	const lazyListRef = useRef(null);
@@ -28,18 +29,22 @@ const LazyList = ({ items, itemRenderer }: LazyListProps) => {
 		return items.slice(0, displayedItemsCount);
 	}, [items, displayedItemsCount]);
 
+	const HeaderComponent = headerComponent;
 	const ItemRendererComponent = itemRenderer;
 
 	return (
-		<ul className="lazy-list" ref={lazyListRef} onScroll={onScroll}>
-			{displayedItems.map((item, index) => {
-				return (
-					<li key={index}>
-						{ItemRendererComponent ? <ItemRendererComponent item={item} /> : item}
-					</li>
-				);
-			})}
-		</ul>
+		<div className="lazy-list" ref={lazyListRef} onScroll={onScroll}>
+			{HeaderComponent && <HeaderComponent />}
+			<ul>
+				{displayedItems.map((item, index) => {
+					return (
+						<li key={index}>
+							{ItemRendererComponent ? <ItemRendererComponent item={item} /> : item}
+						</li>
+					);
+				})}
+			</ul>
+		</div>
 	);
 };
 

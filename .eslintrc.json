@@ -17,6 +17,7 @@
 		"@typescript-eslint/indent": ["error", "tab"],
 		"@typescript-eslint/semi": ["error", "always"],
 		"@typescript-eslint/quotes": ["error", "double", { "allowTemplateLiterals": true }],
+		"@typescript-eslint/consistent-type-definitions": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",
 		"@typescript-eslint/strict-boolean-expressions": "off",
 		"@typescript-eslint/triple-slash-reference": "off",

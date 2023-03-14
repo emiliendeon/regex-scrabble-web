@@ -1,9 +1,9 @@
 import "./textInput.scss";
 
-interface TextInputProps {
+type TextInputProps = {
 	value: string;
 	onChange: (value: string) => void;
-}
+};
 
 const TextInput = ({ value, onChange }: TextInputProps) => {
 	return (
