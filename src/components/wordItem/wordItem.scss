@@ -1,0 +1,73 @@
+.word-item {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 48px;
+	padding: 0 16px;
+	border-top: 1px solid #dfdfdf;
+
+	:last-child > & {
+		border-bottom: 1px solid #dfdfdf;
+	}
+
+	.length {
+		font-size: 16px;
+		color: #afafaf;
+	}
+
+	.word {
+		margin: 0 8px;
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	.score,
+	.score-unrestricted {
+		display: flex;
+		align-items: center;
+		height: 24px;
+		padding: 0 8px;
+		border-radius: 12px;
+		font-size: 16px;
+		font-weight: bold;
+
+		&.score {
+			background-color: #eeeeff;
+			color: #0000af;
+		}
+
+		&.score-unrestricted {
+			margin-left: 4px;
+			background-color: #ffeeee;
+			color: #af0000;
+		}
+	}
+
+	.jokers-count {
+		margin-left: 4px;
+		font-size: 14px;
+	}
+
+	.caret-icon {
+		position: absolute;
+		top: calc(50% - 6px);
+		right: 16px;
+		width: 12px;
+		height: 12px;
+		opacity: 0.6;
+	}
+
+	&:hover {
+		background-color: #2f2f2f;
+
+		.word,
+		.jokers-count {
+			color: #ffffff;
+		}
+
+		.caret-icon {
+			filter: invert(1);
+		}
+	}
+}

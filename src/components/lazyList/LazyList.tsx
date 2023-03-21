@@ -1,19 +1,23 @@
 import "./lazyList.scss";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-type Item = string;
-
-type LazyListProps = {
-	items: Item[];
+type LazyListProps<T> = {
+	items: T[];
 	headerComponent?: React.ComponentType;
-	itemRenderer?: React.ComponentType<{ item: Item }>;
+	itemRenderer: React.ComponentType<{ item: T }>;
 };
 
-const LazyList = ({ items, headerComponent, itemRenderer }: LazyListProps) => {
-	const [displayedItemsCount, setDisplayedItemsCount] = useState(100);
+const InitialDisplayedItemsCount = 100;
 
-	const lazyListRef = useRef(null);
+const LazyList = <T extends string | object>({
+	items,
+	headerComponent,
+	itemRenderer,
+}: LazyListProps<T>) => {
+	const [displayedItemsCount, setDisplayedItemsCount] = useState(InitialDisplayedItemsCount);
+
+	const lazyListRef = useRef<HTMLDivElement>(null);
 
 	const onScroll = () => {
 		if (lazyListRef.current) {
@@ -24,6 +28,11 @@ const LazyList = ({ items, headerComponent, itemRenderer }: LazyListProps) => {
 			}
 		}
 	};
+
+	useEffect(() => {
+		lazyListRef.current?.scrollTo(0, 0);
+		setDisplayedItemsCount(InitialDisplayedItemsCount);
+	}, [items]);
 
 	const displayedItems = useMemo(() => {
 		return items.slice(0, displayedItemsCount);
@@ -39,7 +48,7 @@ const LazyList = ({ items, headerComponent, itemRenderer }: LazyListProps) => {
 				{displayedItems.map((item, index) => {
 					return (
 						<li key={index}>
-							{ItemRendererComponent ? <ItemRendererComponent item={item} /> : item}
+							<ItemRendererComponent item={item} />
 						</li>
 					);
 				})}

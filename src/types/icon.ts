@@ -1,1 +1,1 @@
-export type IconName = "close" | "valid" | "invalid";
+export type IconName = "caret" | "close" | "valid" | "invalid";

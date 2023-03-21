@@ -7,8 +7,9 @@ import Button from "../../components/forms/button/Button";
 import { DictionaryActions } from "../../reducers/dictionary";
 import IconButton from "../../components/forms/iconButton/IconButton";
 import LazyList from "../../components/lazyList/LazyList";
-import { Link } from "react-router-dom";
 import TextInput from "../../components/forms/textInput/TextInput";
+import WordItem from "../../components/wordItem/WordItem";
+import { type WordItem as WordItemType } from "../../types/word";
 import WordsSelectors from "../../selectors/words";
 import { pluralize } from "../../utils/string";
 
@@ -47,7 +48,7 @@ const Dictionary = () => {
 				<Button type="submit" label="Rechercher" />
 			</form>
 			<div className="result">
-				<LazyList
+				<LazyList<WordItemType>
 					items={matchedWords}
 					headerComponent={() => (
 						<div className="count">
@@ -55,9 +56,7 @@ const Dictionary = () => {
 							{pluralize("trouvé", wordsCount)}
 						</div>
 					)}
-					itemRenderer={({ item }) => (
-						<Link to={`/mot/${item.toLowerCase()}`}>{item}</Link>
-					)}
+					itemRenderer={({ item }) => <WordItem wordItem={item} />}
 				/>
 			</div>
 		</div>
