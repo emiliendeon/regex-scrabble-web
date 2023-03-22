@@ -1,0 +1,9 @@
+.button-select {
+	display: flex;
+
+	.button {
+		&:not(:first-child) {
+			border-left: 1px solid rgba(#2f2f2f, 0.2);
+		}
+	}
+}

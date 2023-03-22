@@ -7,6 +7,7 @@ import Button from "../../components/forms/button/Button";
 import { DictionaryActions } from "../../reducers/dictionary";
 import IconButton from "../../components/forms/iconButton/IconButton";
 import LazyList from "../../components/lazyList/LazyList";
+import Sorting from "./sorting/Sorting";
 import TextInput from "../../components/forms/textInput/TextInput";
 import WordItem from "../../components/wordItem/WordItem";
 import { type WordItem as WordItemType } from "../../types/word";
@@ -38,14 +39,17 @@ const Dictionary = () => {
 	return (
 		<div id="dictionary">
 			<form className="search" onSubmit={setSearch}>
-				<IconButton icon="close" label={"Réinitialiser"} onClick={resetSearch} />
-				<TextInput
-					value={localSearch}
-					onChange={(x) => {
-						setLocalSearch(x);
-					}}
-				/>
-				<Button type="submit" label="Rechercher" />
+				<div className="main">
+					<IconButton icon="close" label={"Réinitialiser"} onClick={resetSearch} />
+					<TextInput
+						value={localSearch}
+						onChange={(x) => {
+							setLocalSearch(x);
+						}}
+					/>
+					<Button type="submit" label="Rechercher" />
+				</div>
+				<Sorting />
 			</form>
 			<div className="result">
 				<LazyList<WordItemType>

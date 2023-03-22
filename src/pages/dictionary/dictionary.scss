@@ -6,21 +6,27 @@
 	.search {
 		flex: 0 0 auto;
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 64px;
+		height: 112px;
 		padding: 0 12px;
 		background-color: #4f3f6f;
 
-		> * {
-			margin: 0 4px;
+		.main {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			> * {
+				margin: 0 4px;
+			}
 		}
 	}
 
 	.result {
 		box-sizing: border-box;
-		height: calc(100% - 64px);
+		height: calc(100% - 112px);
 
 		.count {
 			display: flex;
@@ -37,16 +43,13 @@
 
 	@media screen and (max-width: 575px) {
 		.search {
-			align-content: center;
-			height: 112px;
+			padding: 0;
 
-			> * {
-				margin: 8px 4px;
+			.main {
+				.text-input {
+					width: 180px;
+				}
 			}
-		}
-
-		.result {
-			height: calc(100% - 112px);
 		}
 	}
 }

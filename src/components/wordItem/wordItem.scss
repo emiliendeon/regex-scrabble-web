@@ -4,7 +4,7 @@
 	justify-content: flex-start;
 	align-items: center;
 	height: 48px;
-	padding: 0 16px;
+	padding: 0 16px 0 8px;
 	border-top: 1px solid #dfdfdf;
 
 	:last-child > & {
@@ -12,8 +12,10 @@
 	}
 
 	.length {
+		width: 24px;
 		font-size: 16px;
 		color: #afafaf;
+		text-align: right;
 	}
 
 	.word {
@@ -68,6 +70,28 @@
 
 		.caret-icon {
 			filter: invert(1);
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		height: 42px;
+		padding: 0 12px 0 0;
+
+		.length,
+		.score,
+		.score-unrestricted {
+			font-size: 12px;
+		}
+
+		.word {
+			font-size: 16px;
+		}
+
+		.caret-icon {
+			top: calc(50% - 5px);
+			right: 12px;
+			width: 10px;
+			height: 10px;
 		}
 	}
 }
