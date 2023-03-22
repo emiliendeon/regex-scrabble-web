@@ -17,9 +17,10 @@ import { pluralize } from "../../utils/string";
 const Dictionary = () => {
 	const dispatch = useDispatch();
 
-	const [localSearch, setLocalSearch] = useState("");
-
+	const search = useSelector((state) => state.dictionary.search);
 	const matchedWords = useSelector((state) => WordsSelectors.bySearch(state));
+
+	const [localSearch, setLocalSearch] = useState(search);
 
 	const setSearch = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
