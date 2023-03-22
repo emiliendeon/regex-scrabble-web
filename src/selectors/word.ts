@@ -24,6 +24,8 @@ const WordSelectors = {
 		const prefixOfWord = WordProcessors.unprefixed1Part(wordFormatted);
 		const suffixOfWord = WordProcessors.unsuffixed1Part(wordFormatted);
 
+		const anagramsRegex = new RegExp(`^${Regex.anagram(wordFormatted)}$`);
+
 		return {
 			word: wordFormatted,
 
@@ -38,6 +40,10 @@ const WordSelectors = {
 				.map((ods8Word) => ({ word: ods8Word, suffix: WordProcessors.suffix1(ods8Word) })),
 
 			suffixOf: { word: suffixOfWord, valid: ods8Words.includes(suffixOfWord) },
+
+			anagrams: ods8Words.filter(
+				(ods8Word) => ods8Word !== wordFormatted && anagramsRegex.test(ods8Word)
+			),
 		};
 	}),
 };

@@ -9,9 +9,7 @@ type IconProps = {
 	showTitle?: boolean;
 };
 
-export type IconHOCProps = {
-	label?: string;
-};
+export type IconHOCProps = Partial<Pick<IconProps, "label">>;
 
 type IconBaseComponent = (props: IconProps) => React.ReactElement<"img">;
 export type IconHOC<T extends IconHOCProps = IconHOCProps> = (

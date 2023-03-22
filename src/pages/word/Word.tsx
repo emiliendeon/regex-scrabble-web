@@ -97,6 +97,22 @@ const Word = () => {
 						</div>
 					</>
 				)}
+				<div className="anagrams">
+					<h2>Anagrammes</h2>
+					{wordData.anagrams.length >= 1 ? (
+						<ul>
+							{wordData.anagrams.map((anagramWord) => (
+								<li key={anagramWord}>
+									<Link className="raw" to={`/mot/${anagramWord.toLowerCase()}`}>
+										{anagramWord}
+									</Link>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p className="none">Aucune</p>
+					)}
+				</div>
 			</div>
 			<div className="links">
 				<BackLink label="Précédent" />
