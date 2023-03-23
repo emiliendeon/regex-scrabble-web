@@ -1,6 +1,7 @@
 import "./button.scss";
 
 export type ButtonProps = {
+	className?: string;
 	type?: "button" | "submit";
 	label: string;
 	title?: string;
@@ -8,18 +9,20 @@ export type ButtonProps = {
 	onClick?: () => void;
 };
 
-const Button = ({ type, label, title, disabled, onClick }: ButtonProps) => {
+const Button = ({ className, type, label, title, disabled, onClick }: ButtonProps) => {
+	const onLocalClick = () => {
+		if (onClick) {
+			onClick();
+		}
+	};
+
 	return (
 		<button
 			type={type ?? "button"}
-			className="button"
+			className={`button ${className ?? ""}`}
 			title={title}
 			disabled={disabled}
-			onClick={() => {
-				if (onClick) {
-					onClick();
-				}
-			}}
+			onClick={onLocalClick}
 		>
 			{label}
 		</button>

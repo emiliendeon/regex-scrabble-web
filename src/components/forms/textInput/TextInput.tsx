@@ -1,21 +1,34 @@
 import "./textInput.scss";
 
-type TextInputProps = {
+import { type FormatType, formatInput } from "../../../utils/string";
+
+import { forwardRef } from "react";
+
+type TextInputProps = React.PropsWithRef<{
+	type?: FormatType;
+	placeholder?: string;
 	value: string;
 	onChange: (value: string) => void;
-};
+}>;
 
-const TextInput = ({ value, onChange }: TextInputProps) => {
-	return (
-		<input
-			className="text-input"
-			type="text"
-			value={value}
-			onChange={(e) => {
-				onChange(e.target.value);
-			}}
-		/>
-	);
-};
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+	({ type, placeholder, value, onChange }, ref) => {
+		const onLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+			const newValue = type ? formatInput[type](event.target.value) : event.target.value;
+			onChange(newValue);
+		};
+
+		return (
+			<input
+				ref={ref}
+				className="text-input"
+				type="text"
+				placeholder={placeholder}
+				value={value}
+				onChange={onLocalChange}
+			/>
+		);
+	}
+);
 
 export default TextInput;

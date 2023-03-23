@@ -23,6 +23,7 @@
 		"@typescript-eslint/strict-boolean-expressions": "off",
 		"@typescript-eslint/triple-slash-reference": "off",
 		"react/react-in-jsx-scope": "off",
+		"react/display-name": "off",
 		"react/prop-types": "off",
 		"no-console": ["error", { "allow": ["error"] }],
 		"no-restricted-imports": "off",

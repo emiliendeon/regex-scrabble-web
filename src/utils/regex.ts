@@ -6,6 +6,12 @@ const Regex = {
 
 	suffix1: (word: string) => `${word}.`,
 
+	prefixOf: (word: string) => `${word}.*`,
+
+	suffixOf: (word: string) => `.*${word}`,
+
+	infixOf: (word: string) => `.*${word}.*`,
+
 	anagram: (word: string) => {
 		const lettersCounts: { [K in Letter]?: number } = {};
 
