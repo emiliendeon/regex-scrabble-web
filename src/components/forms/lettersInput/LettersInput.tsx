@@ -21,6 +21,10 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 			onChange(value.replace(replaceRegex, ""));
 		};
 
+		const removeLastLetter = () => {
+			onChange(value.slice(0, -1));
+		};
+
 		const currentLetters = useMemo(() => {
 			return [...value];
 		}, [value]);
@@ -34,6 +38,7 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 					placeholder={placeholder}
 					value=""
 					onChange={addLetter}
+					onDelete={removeLastLetter}
 					onReset={() => {
 						onChange("");
 					}}

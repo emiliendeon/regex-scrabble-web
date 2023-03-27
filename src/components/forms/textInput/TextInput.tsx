@@ -9,14 +9,21 @@ export type TextInputProps = React.PropsWithRef<{
 	placeholder?: string;
 	value: string;
 	onChange: (value: string) => void;
+	onDelete?: () => void;
 	onReset?: () => void;
 }>;
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-	({ type, placeholder, value, onChange, onReset }, ref) => {
+	({ type, placeholder, value, onChange, onDelete, onReset }, ref) => {
 		const onLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = type ? formatInput[type](event.target.value) : event.target.value;
 			onChange(newValue);
+		};
+
+		const onLocalKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+			if (onDelete && event.key === "Backspace") {
+				onDelete();
+			}
 		};
 
 		const onLocalReset = () => {
@@ -35,6 +42,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 					placeholder={placeholder}
 					value={value}
 					onChange={onLocalChange}
+					onKeyUp={onLocalKeyUp}
 				/>
 				{onReset && (
 					<IconButton icon="close" label="Réinitialiser" onClick={onLocalReset} />
