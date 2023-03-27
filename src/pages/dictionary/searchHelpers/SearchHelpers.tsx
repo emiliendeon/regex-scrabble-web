@@ -26,6 +26,11 @@ const SearchHelpers = () => {
 		setCurrentHelperId(searchHelperId);
 	};
 
+	const onCloseHelper = () => {
+		setCurrentHelperId(null);
+		setInput("");
+	};
+
 	const onLoadHelper = () => {
 		textInputRef.current?.focus();
 	};
@@ -58,9 +63,7 @@ const SearchHelpers = () => {
 				visible={Boolean(currentHelperId)}
 				title={currentHelper?.title}
 				onLoad={onLoadHelper}
-				onClose={() => {
-					setCurrentHelperId(null);
-				}}
+				onClose={onCloseHelper}
 				onValidate={() => {
 					onValidate(currentHelperId as SearchHelperId);
 				}}
