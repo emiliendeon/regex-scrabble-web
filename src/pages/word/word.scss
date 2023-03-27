@@ -1,6 +1,7 @@
 #word {
 	display: flex;
 	flex-direction: column;
+	padding-bottom: 32px;
 	overflow-y: auto;
 
 	h1 {
@@ -95,6 +96,20 @@
 
 		> * {
 			margin: 0 6px;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		h1 {
+			font-size: 24px;
+		}
+
+		.neighbors {
+			> * {
+				h2 {
+					font-size: 20px;
+				}
+			}
 		}
 	}
 

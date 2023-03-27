@@ -10,36 +10,43 @@ const getSorting = (state: Store) => state.dictionary.sorting;
 
 const WordsSelectors = {
 	bySearch: createSelector([getSearch, getSorting], (search, sorting): WordItem[] => {
-		const regex = new RegExp(`^${search}$`, "i");
+		try {
+			const regex = new RegExp(`^${search}$`, "i");
 
-		const words = ods8Words
-			.filter((ods8Word) => regex.test(ods8Word))
-			.map((ods8Word) => ({
-				word: ods8Word,
-				...WordComputers.values(ods8Word),
-			})) as WordItem[];
+			const words = ods8Words
+				.filter((ods8Word) => regex.test(ods8Word))
+				.map((ods8Word) => ({
+					word: ods8Word,
+					...WordComputers.values(ods8Word),
+				})) as WordItem[];
 
-		const sort: {
-			[K in DictionaryStore["sorting"]["criterion"]]: (a: WordItem, b: WordItem) => number;
-		} = {
-			LENGTH: (a, b) => a.length - b.length,
-			WORD: (a, b) => (a.word < b.word ? -1 : 1),
-			SCORE: (a, b) => a.score - b.score,
-		};
+			const sort: {
+				[K in DictionaryStore["sorting"]["criterion"]]: (
+					a: WordItem,
+					b: WordItem
+				) => number;
+			} = {
+				LENGTH: (a, b) => a.length - b.length,
+				WORD: (a, b) => (a.word < b.word ? -1 : 1),
+				SCORE: (a, b) => a.score - b.score,
+			};
 
-		return words.sort((a, b) => {
-			let cmp = sort[sorting.criterion](a, b);
+			return words.sort((a, b) => {
+				let cmp = sort[sorting.criterion](a, b);
 
-			const secondarySortingCriteria = Object.keys(sort).filter(
-				(sortingCriterion) => sortingCriterion !== sorting.criterion
-			) as Array<DictionaryStore["sorting"]["criterion"]>;
+				const secondarySortingCriteria = Object.keys(sort).filter(
+					(sortingCriterion) => sortingCriterion !== sorting.criterion
+				) as Array<DictionaryStore["sorting"]["criterion"]>;
 
-			for (let i = 0; cmp === 0 && i < secondarySortingCriteria.length; i++) {
-				cmp = sort[secondarySortingCriteria[i]](a, b);
-			}
+				for (let i = 0; cmp === 0 && i < secondarySortingCriteria.length; i++) {
+					cmp = sort[secondarySortingCriteria[i]](a, b);
+				}
 
-			return sorting.mode === "ASC" ? cmp : -cmp;
-		});
+				return sorting.mode === "ASC" ? cmp : -cmp;
+			});
+		} catch (e) {
+			return [];
+		}
 	}),
 };
 
