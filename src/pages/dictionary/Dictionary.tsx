@@ -44,8 +44,8 @@ const Dictionary = () => {
 
 	return (
 		<div id="dictionary">
-			<form className="search" onSubmit={setSearch}>
-				<div className="main">
+			<div className="search">
+				<form className="main" onSubmit={setSearch}>
 					<IconButton icon="close" label={"Réinitialiser"} onClick={resetSearch} />
 					<TextInput
 						type="search"
@@ -56,10 +56,10 @@ const Dictionary = () => {
 						}}
 					/>
 					<Button type="submit" label="Rechercher" />
-				</div>
+				</form>
 				<SearchHelpers />
 				<Sorting />
-			</form>
+			</div>
 			<div className="result">
 				<LazyList<WordItemType>
 					items={matchedWords}

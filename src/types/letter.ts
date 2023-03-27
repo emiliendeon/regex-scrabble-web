@@ -28,3 +28,5 @@ export const Letters = [
 ] as const;
 
 export type Letter = (typeof Letters)[number];
+
+export type LetterOrWildcard = Letter | ".";

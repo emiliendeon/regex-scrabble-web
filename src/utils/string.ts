@@ -1,12 +1,14 @@
 export const pluralize = (str: string, count?: number) =>
 	count === 0 || count === 1 ? str : `${str}s`;
 
-export type FormatType = "word" | "search";
+export type FormatType = "word" | "letters" | "search";
 type Formatter = (input: string) => string;
 type Formatters = { [K in FormatType]: Formatter };
 
 export const formatInput: Formatters = {
 	word: (input: string) => input.toUpperCase().replace(/[^A-Z]/g, ""),
+
+	letters: (input: string) => input.toUpperCase().replace(/[^A-Z.]/g, ""),
 
 	search: (input: string) =>
 		input

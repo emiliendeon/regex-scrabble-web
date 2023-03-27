@@ -1,5 +1,4 @@
-import { type Letter } from "../types/letter";
-import { Word } from "../types/word";
+import { type Letter, type LetterOrWildcard } from "../types/letter";
 
 const Regex = {
 	prefix1: (word: string) => `.${word}`,
@@ -12,17 +11,23 @@ const Regex = {
 
 	infixOf: (word: string) => `.*${word}.*`,
 
-	anagram: (word: string) => {
-		const lettersCounts: { [K in Letter]?: number } = {};
+	anagram: <AllowWildcards extends boolean = false>(word: string) => {
+		type LettersCountsKey = AllowWildcards extends true ? LetterOrWildcard : Letter;
 
-		for (const letter of new Word(word).asLetterArray) {
+		const lettersCounts: {
+			[K in LettersCountsKey]?: number;
+		} = {};
+
+		const letters = [...word] as LettersCountsKey[];
+
+		for (const letter of letters) {
 			lettersCounts[letter] = (lettersCounts[letter] ?? 0) + 1;
 		}
 
 		let regex = "";
 
 		for (const [letter, count] of Object.entries(lettersCounts)) {
-			regex += `(?=(.*${letter}){${count}})`;
+			regex += `(?=(.*${letter}){${count as number}})`;
 		}
 
 		regex += `.{${word.length}}`;

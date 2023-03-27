@@ -4,6 +4,7 @@ import { type SearchHelperId, SearchHelpers as SearchHelpersList } from "../../.
 import { useMemo, useRef, useState } from "react";
 import Button from "../../../components/forms/button/Button";
 import { DictionaryActions } from "../../../reducers/dictionary";
+import LettersInput from "../../../components/forms/lettersInput/LettersInput";
 import Modal from "../../../components/modal/Modal";
 import Regex from "../../../utils/regex";
 import TextInput from "../../../components/forms/textInput/TextInput";
@@ -17,8 +18,8 @@ const SearchHelpers = () => {
 
 	const textInputRef = useRef<HTMLInputElement>(null);
 
-	const modalTitle = useMemo(() => {
-		return currentHelperId ? SearchHelpersList[currentHelperId].title : undefined;
+	const currentHelper = useMemo(() => {
+		return currentHelperId ? SearchHelpersList[currentHelperId] : null;
 	}, [currentHelperId]);
 
 	const onSelectHelper = (searchHelperId: SearchHelperId) => {
@@ -31,7 +32,9 @@ const SearchHelpers = () => {
 
 	const onValidate = (searchHelperId: SearchHelperId) => {
 		if (input) {
-			const regex = Regex[searchHelperId](input);
+			const regex = currentHelper?.allowWildcards
+				? Regex[searchHelperId]<true>(input)
+				: Regex[searchHelperId](input);
 			dispatch(DictionaryActions.setSearch(regex));
 
 			setCurrentHelperId(null);
@@ -53,7 +56,7 @@ const SearchHelpers = () => {
 			))}
 			<Modal
 				visible={Boolean(currentHelperId)}
-				title={modalTitle}
+				title={currentHelper?.title}
 				onLoad={onLoadHelper}
 				onClose={() => {
 					setCurrentHelperId(null);
@@ -62,14 +65,24 @@ const SearchHelpers = () => {
 					onValidate(currentHelperId as SearchHelperId);
 				}}
 			>
-				<TextInput
-					ref={textInputRef}
-					type="word"
-					value={input}
-					onChange={(x) => {
-						setInput(x);
-					}}
-				/>
+				{currentHelper?.inputType === "letters-input" ? (
+					<LettersInput
+						ref={textInputRef}
+						value={input}
+						onChange={(x) => {
+							setInput(x);
+						}}
+					/>
+				) : (
+					<TextInput
+						ref={textInputRef}
+						type="word"
+						value={input}
+						onChange={(x) => {
+							setInput(x);
+						}}
+					/>
+				)}
 			</Modal>
 		</div>
 	);
