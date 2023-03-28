@@ -1,3 +1,4 @@
+import { DefaultSortingOrder } from "../utils/dictionary";
 import { type DictionaryStore } from "../reducers/dictionary";
 import { type Store } from "../store";
 import { WordComputers } from "../computers/word";
@@ -33,16 +34,19 @@ const WordsSelectors = {
 
 			return words.sort((a, b) => {
 				let cmp = sort[sorting.criterion](a, b);
+				const primarySortingCriterionUsed = cmp !== 0;
 
-				const secondarySortingCriteria = Object.keys(sort).filter(
-					(sortingCriterion) => sortingCriterion !== sorting.criterion
-				) as Array<DictionaryStore["sorting"]["criterion"]>;
+				if (!primarySortingCriterionUsed) {
+					const secondarySortingCriteria = DefaultSortingOrder.filter(
+						(sortingCriterion) => sortingCriterion !== sorting.criterion
+					);
 
-				for (let i = 0; cmp === 0 && i < secondarySortingCriteria.length; i++) {
-					cmp = sort[secondarySortingCriteria[i]](a, b);
+					for (let i = 0; cmp === 0 && i < secondarySortingCriteria.length; i++) {
+						cmp = sort[secondarySortingCriteria[i]](a, b);
+					}
 				}
 
-				return sorting.mode === "ASC" ? cmp : -cmp;
+				return sorting.mode === "DESC" && primarySortingCriterionUsed ? -cmp : cmp;
 			});
 		} catch (e) {
 			return [];

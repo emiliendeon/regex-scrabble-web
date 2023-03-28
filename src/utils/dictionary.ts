@@ -46,6 +46,12 @@ export const formatSortingValue = (
 ): `${DictionaryStore["sorting"]["criterion"]}_${DictionaryStore["sorting"]["mode"]}` =>
 	`${sortingOption.criterion}_${sortingOption.mode}`;
 
+export const DefaultSortingOrder: Array<DictionaryStore["sorting"]["criterion"]> = [
+	"LENGTH",
+	"WORD",
+	"SCORE",
+];
+
 export type SearchHelperId = "prefixOf" | "suffixOf" | "infixOf" | "subAnagram" | "anagram";
 type SearchHelper = {
 	label: string;
