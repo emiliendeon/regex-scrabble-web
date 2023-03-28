@@ -46,12 +46,13 @@ export const formatSortingValue = (
 ): `${DictionaryStore["sorting"]["criterion"]}_${DictionaryStore["sorting"]["mode"]}` =>
 	`${sortingOption.criterion}_${sortingOption.mode}`;
 
-export type SearchHelperId = "prefixOf" | "suffixOf" | "infixOf" | "anagram";
+export type SearchHelperId = "prefixOf" | "suffixOf" | "infixOf" | "subAnagram" | "anagram";
 type SearchHelper = {
 	label: string;
 	title: string;
 	inputType?: "letters-input";
 	allowWildcards?: true;
+	autoSort?: DictionaryStore["sorting"];
 };
 
 export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
@@ -66,6 +67,16 @@ export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
 	infixOf: {
 		label: "..A..",
 		title: "Mots contenant...",
+	},
+	subAnagram: {
+		label: "Tirage",
+		title: "Tous les mots possibles avec...",
+		inputType: "letters-input",
+		allowWildcards: true,
+		autoSort: {
+			criterion: "LENGTH",
+			mode: "DESC",
+		},
 	},
 	anagram: {
 		label: "Anagrammes",

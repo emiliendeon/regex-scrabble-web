@@ -35,12 +35,15 @@ const SearchHelpers = () => {
 		textInputRef.current?.focus();
 	};
 
-	const onValidate = (searchHelperId: SearchHelperId) => {
+	const onValidate = () => {
 		if (input) {
-			const search = currentHelper?.allowWildcards
-				? Regex[searchHelperId]<true>(input)
-				: Regex[searchHelperId](input);
-			dispatch(DictionaryActions.setSearch(search));
+			const search = Regex[currentHelperId as SearchHelperId](input);
+			dispatch(
+				DictionaryActions.set({
+					search,
+					...(currentHelper?.autoSort ? { sorting: currentHelper.autoSort } : {}),
+				})
+			);
 
 			setCurrentHelperId(null);
 			setInput("");
@@ -64,9 +67,7 @@ const SearchHelpers = () => {
 				title={currentHelper?.title}
 				onLoad={onLoadHelper}
 				onClose={onCloseHelper}
-				onValidate={() => {
-					onValidate(currentHelperId as SearchHelperId);
-				}}
+				onValidate={onValidate}
 			>
 				{currentHelper?.inputType === "letters-input" ? (
 					<LettersInput

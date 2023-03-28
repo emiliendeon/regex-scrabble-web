@@ -1,8 +1,18 @@
+@use "src/colors" as colors;
+
 #search-helpers {
 	display: flex;
 	margin-top: 16px;
 
 	> .button {
-		margin: 0 4px;
+		&:not(:first-child) {
+			border-left: 1px solid colors.$primary;
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		> .button {
+			font-size: 14px;
+		}
 	}
 }

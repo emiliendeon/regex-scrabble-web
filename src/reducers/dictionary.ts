@@ -20,14 +20,17 @@ const DictionarySlice = createSlice({
 	name: "dictionary",
 	initialState,
 	reducers: {
+		set: (state, { payload }: PayloadAction<Partial<DictionaryStore>>) => {
+			return { ...state, ...payload };
+		},
 		setSearch: (state, { payload }: PayloadAction<DictionaryStore["search"]>) => {
-			state.search = payload;
+			return { ...state, search: payload };
 		},
 		resetSearch: (state) => {
-			state.search = initialState.search;
+			return { ...state, search: initialState.search };
 		},
 		setSorting: (state, { payload }: PayloadAction<DictionaryStore["sorting"]>) => {
-			state.sorting = payload;
+			return { ...state, sorting: payload };
 		},
 	},
 });

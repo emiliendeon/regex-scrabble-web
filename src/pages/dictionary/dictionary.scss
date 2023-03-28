@@ -1,3 +1,5 @@
+@use "src/colors" as colors;
+
 #dictionary {
 	display: flex;
 	flex-direction: column;
@@ -13,7 +15,7 @@
 		box-sizing: border-box;
 		height: 160px;
 		padding: 0 12px;
-		background-color: #4f3f6f;
+		background-color: colors.$primary;
 
 		.main {
 			display: flex;
