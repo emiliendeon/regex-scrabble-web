@@ -24,8 +24,17 @@
 			padding: 8px;
 
 			h2 {
+				display: flex;
+				align-items: center;
 				margin-bottom: 8px;
-				text-align: center;
+
+				.icon-button {
+					width: 12px;
+					height: 12px;
+					margin-left: 12px;
+					opacity: 0.4;
+					transform: translateY(2px);
+				}
 			}
 
 			ul {

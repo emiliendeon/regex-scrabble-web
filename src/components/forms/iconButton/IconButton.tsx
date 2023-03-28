@@ -1,19 +1,28 @@
 import "./iconButton.scss";
 
+import ArrowIcon from "../../icon/icons/ArrowIcon";
 import { type ButtonProps } from "../button/Button";
 import CaretIcon from "../../icon/icons/CaretIcon";
 import CloseIcon from "../../icon/icons/CloseIcon";
 import { type IconName } from "../../../types/icon";
 import InvalidIcon from "../../icon/icons/InvalidIcon";
+import { type Orientable } from "../../../types/component";
 import ValidIcon from "../../icon/icons/ValidIcon";
 import { useMemo } from "react";
 
 type IconButtonProps = Omit<ButtonProps, "label"> &
-	Partial<Pick<ButtonProps, "label">> & {
-		icon: IconName;
-	};
+	Partial<Pick<ButtonProps, "label">> &
+	(
+		| Orientable<{
+				icon: Extract<IconName, "arrow" | "caret">;
+		  }>
+		| {
+				icon: Extract<IconName, "close" | "valid" | "invalid">;
+				orientation?: never;
+		  }
+	);
 
-const IconButton = ({ type, icon, label, onClick }: IconButtonProps) => {
+const IconButton = ({ type, icon, orientation, label, onClick }: IconButtonProps) => {
 	const onLocalClick = () => {
 		if (onClick) {
 			onClick();
@@ -22,6 +31,7 @@ const IconButton = ({ type, icon, label, onClick }: IconButtonProps) => {
 
 	const IconComponent = useMemo(() => {
 		const iconComponents: { [K in IconName]: React.ComponentType<any> } = {
+			arrow: ArrowIcon,
 			caret: CaretIcon,
 			close: CloseIcon,
 			valid: ValidIcon,
@@ -31,8 +41,13 @@ const IconButton = ({ type, icon, label, onClick }: IconButtonProps) => {
 	}, [icon]);
 
 	return (
-		<button type={type ?? "button"} className="icon-button" onClick={onLocalClick}>
-			<IconComponent label={label} />
+		<button
+			type={type ?? "button"}
+			className="icon-button"
+			aria-label={label}
+			onClick={onLocalClick}
+		>
+			<IconComponent label={label} orientation={orientation} />
 		</button>
 	);
 };

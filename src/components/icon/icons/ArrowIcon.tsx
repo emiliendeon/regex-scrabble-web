@@ -1,18 +1,18 @@
-import "./caretIcon.scss";
+import "./arrowIcon.scss";
 import Icon, { type IconHOC, type IconHOCProps } from "../Icon";
 import { type Orientable } from "../../../types/component";
 
-type CaretIconProps = Orientable<IconHOCProps>;
+type ArrowIconProps = Orientable<IconHOCProps>;
 
-const CaretIcon: IconHOC<CaretIconProps> = ({ label, orientation }: CaretIconProps) => {
+const ArrowIcon: IconHOC<ArrowIconProps> = ({ label, orientation }: ArrowIconProps) => {
 	return (
 		<Icon
 			className={orientation}
-			name={"caret"}
+			name={"arrow"}
 			label={label ?? "Voir le détail"}
 			showTitle={false}
 		/>
 	);
 };
 
-export default CaretIcon;
+export default ArrowIcon;

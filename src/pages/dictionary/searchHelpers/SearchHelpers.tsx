@@ -37,10 +37,10 @@ const SearchHelpers = () => {
 
 	const onValidate = (searchHelperId: SearchHelperId) => {
 		if (input) {
-			const regex = currentHelper?.allowWildcards
+			const search = currentHelper?.allowWildcards
 				? Regex[searchHelperId]<true>(input)
 				: Regex[searchHelperId](input);
-			dispatch(DictionaryActions.setSearch(regex));
+			dispatch(DictionaryActions.setSearch(search));
 
 			setCurrentHelperId(null);
 			setInput("");

@@ -18,32 +18,51 @@ const WordSelectors = {
 			return null;
 		}
 
-		const prefixes1Regex = new RegExp(`^${Regex.prefix1(wordFormatted)}$`);
-		const suffixes1Regex = new RegExp(`^${Regex.suffix1(wordFormatted)}$`);
+		const prefixes1Search = Regex.prefix1(wordFormatted);
+		const prefixes1Regex = new RegExp(`^${prefixes1Search}$`);
+
+		const suffixes1Search = Regex.suffix1(wordFormatted);
+		const suffixes1Regex = new RegExp(`^${suffixes1Search}$`);
 
 		const prefixOfWord = WordProcessors.unprefixed1Part(wordFormatted);
 		const suffixOfWord = WordProcessors.unsuffixed1Part(wordFormatted);
 
-		const anagramsRegex = new RegExp(`^${Regex.anagram(wordFormatted)}$`);
+		const anagramsSearch = Regex.anagram(wordFormatted);
+		const anagramsRegex = new RegExp(`^${anagramsSearch}$`);
 
 		return {
 			word: wordFormatted,
 
-			prefixes1: ods8Words
-				.filter((ods8Word) => prefixes1Regex.test(ods8Word))
-				.map((ods8Word) => ({ word: ods8Word, prefix: WordProcessors.prefix1(ods8Word) })),
+			prefixes1: {
+				search: prefixes1Search,
+				words: ods8Words
+					.filter((ods8Word) => prefixes1Regex.test(ods8Word))
+					.map((ods8Word) => ({
+						word: ods8Word,
+						prefix: WordProcessors.prefix1(ods8Word),
+					})),
+			},
+
+			suffixes1: {
+				search: suffixes1Search,
+				words: ods8Words
+					.filter((ods8Word) => suffixes1Regex.test(ods8Word))
+					.map((ods8Word) => ({
+						word: ods8Word,
+						suffix: WordProcessors.suffix1(ods8Word),
+					})),
+			},
 
 			prefixOf: { word: prefixOfWord, valid: ods8Words.includes(prefixOfWord) },
 
-			suffixes1: ods8Words
-				.filter((ods8Word) => suffixes1Regex.test(ods8Word))
-				.map((ods8Word) => ({ word: ods8Word, suffix: WordProcessors.suffix1(ods8Word) })),
-
 			suffixOf: { word: suffixOfWord, valid: ods8Words.includes(suffixOfWord) },
 
-			anagrams: ods8Words.filter(
-				(ods8Word) => ods8Word !== wordFormatted && anagramsRegex.test(ods8Word)
-			),
+			anagrams: {
+				search: anagramsSearch,
+				words: ods8Words.filter(
+					(ods8Word) => ods8Word !== wordFormatted && anagramsRegex.test(ods8Word)
+				),
+			},
 		};
 	}),
 };

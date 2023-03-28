@@ -4,11 +4,13 @@
 	height: 100%;
 
 	.search {
+		position: relative;
 		flex: 0 0 auto;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		box-sizing: border-box;
 		height: 160px;
 		padding: 0 12px;
 		background-color: #4f3f6f;
@@ -43,12 +45,21 @@
 
 	@media screen and (max-width: 575px) {
 		.search {
-			padding: 0;
+			height: 144px;
+			padding: 0 0 32px;
 
 			.main {
 				.text-input {
 					width: 180px;
 				}
+			}
+		}
+
+		.result {
+			height: calc(100% - 144px);
+
+			.lazy-list {
+				padding: 0 0 100px;
 			}
 		}
 	}
