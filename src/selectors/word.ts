@@ -1,3 +1,4 @@
+import Meta from "../utils/meta";
 import Regex from "../utils/regex";
 import { type Store } from "../store";
 import { WordProcessors } from "../computers/word";
@@ -32,6 +33,8 @@ const WordSelectors = {
 
 		return {
 			word: wordFormatted,
+
+			title: `${wordFormatted} | ${Meta.title}`,
 
 			prefixes1: {
 				search: prefixes1Search,

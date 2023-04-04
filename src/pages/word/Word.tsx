@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "../../store";
 
 import BackLink from "../../components/backLink/BackLink";
 import { DictionaryActions } from "../../reducers/dictionary";
+import { Helmet } from "react-helmet-async";
 import IconButton from "../../components/forms/iconButton/IconButton";
 import InvalidIcon from "../../components/icon/icons/InvalidIcon";
 import ValidIcon from "../../components/icon/icons/ValidIcon";
@@ -28,6 +29,10 @@ const Word = () => {
 
 	return (
 		<div id="word">
+			<Helmet>
+				<meta property="og:title" content={wordData.title} />
+				<title>{wordData.title}</title>
+			</Helmet>
 			<h1>{wordData.word}</h1>
 			<div className="neighbors">
 				<div className="prefixes">
