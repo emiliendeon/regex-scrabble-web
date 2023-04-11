@@ -20,35 +20,9 @@
 
 	.word {
 		margin: 0 8px;
+		padding-bottom: 2px;
 		font-size: 20px;
 		font-weight: bold;
-	}
-
-	.score,
-	.score-unrestricted {
-		display: flex;
-		align-items: center;
-		height: 24px;
-		padding: 0 8px;
-		border-radius: 12px;
-		font-size: 16px;
-		font-weight: bold;
-
-		&.score {
-			background-color: #eeeeff;
-			color: #0000af;
-		}
-
-		&.score-unrestricted {
-			margin-left: 4px;
-			background-color: #ffeeee;
-			color: #af0000;
-		}
-	}
-
-	.jokers-count {
-		margin-left: 4px;
-		font-size: 14px;
 	}
 
 	.caret-icon {
@@ -63,8 +37,7 @@
 	&:hover {
 		background-color: #2f2f2f;
 
-		.word,
-		.jokers-count {
+		.word {
 			color: #ffffff;
 		}
 
@@ -77,13 +50,12 @@
 		height: 42px;
 		padding: 0 12px 0 0;
 
-		.length,
-		.score,
-		.score-unrestricted {
+		.length {
 			font-size: 12px;
 		}
 
 		.word {
+			padding-bottom: 0;
 			font-size: 16px;
 		}
 

@@ -9,9 +9,14 @@
 		text-align: center;
 	}
 
+	.word-values {
+		align-self: center;
+	}
+
 	.neighbors {
 		display: flex;
 		flex-wrap: wrap;
+		margin-top: 16px;
 		padding: 0 8px;
 
 		> * {

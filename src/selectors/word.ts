@@ -1,14 +1,15 @@
+import { WordComputers, WordProcessors } from "../computers/word";
 import Meta from "../utils/meta";
 import Regex from "../utils/regex";
 import { type Store } from "../store";
-import { WordProcessors } from "../computers/word";
+import { type WordData } from "../types/word";
 import { createSelector } from "@reduxjs/toolkit";
 import ods8Words from "../assets/ods8";
 
 const getWord = (_state: Store, word: string | undefined) => word;
 
 const WordSelectors = {
-	wordData: createSelector([getWord], (word) => {
+	wordData: createSelector([getWord], (word): WordData | null => {
 		if (!word) {
 			return null;
 		}
@@ -66,7 +67,9 @@ const WordSelectors = {
 					(ods8Word) => ods8Word !== wordFormatted && anagramsRegex.test(ods8Word)
 				),
 			},
-		};
+
+			...WordComputers.values(wordFormatted),
+		} as WordData;
 	}),
 };
 

@@ -1,6 +1,6 @@
 import { type Letter, Letters } from "./letter";
 
-type WordValue = [Letter, ...Letter[]] & {
+type WordAsLetterArray = [Letter, ...Letter[]] & {
 	length:
 		| 2
 		| 3
@@ -25,7 +25,7 @@ type WordValue = [Letter, ...Letter[]] & {
 };
 
 export class Word {
-	private readonly _word: WordValue | null = null;
+	private readonly _word: WordAsLetterArray | null = null;
 
 	constructor(word: string) {
 		if (!(word.length >= 2 && word.length <= 21)) {
@@ -38,7 +38,7 @@ export class Word {
 			}
 		}
 
-		this._word = [...word] as WordValue;
+		this._word = [...word] as WordAsLetterArray;
 	}
 
 	get word() {
@@ -60,3 +60,36 @@ export type WordValues = {
 export type WordItem = {
 	word: string;
 } & WordValues;
+
+type NeighborValidity = {
+	word: string;
+	valid: boolean;
+};
+
+type Neighbors<
+	Detailed extends boolean = false,
+	KeyName extends string = Detailed extends true ? "data" : never
+> = {
+	search: string;
+	words: Array<
+		Detailed extends true
+			? {
+					word: string;
+			  } & {
+					[key in KeyName]: string;
+			  }
+			: string
+	>;
+};
+
+export type WordData = WordItem & {
+	title: string;
+
+	prefixes1: Neighbors<true, "prefix">;
+	suffixes1: Neighbors<true, "suffix">;
+
+	prefixOf: NeighborValidity;
+	suffixOf: NeighborValidity;
+
+	anagrams: Neighbors;
+};

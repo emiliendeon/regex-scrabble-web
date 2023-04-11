@@ -3,7 +3,7 @@ import "./wordItem.scss";
 import CaretIcon from "../icon/icons/CaretIcon";
 import { Link } from "react-router-dom";
 import { type WordItem as WordItemType } from "../../types/word";
-import { pluralize } from "../../utils/string";
+import WordValues from "../wordValues/WordValues";
 
 type WordItemProps = {
 	wordItem: WordItemType;
@@ -16,34 +16,7 @@ const WordItem = ({ wordItem }: WordItemProps) => {
 				{wordItem.length}
 			</div>
 			<div className="word">{wordItem.word}</div>
-			<div
-				className="score"
-				title={`${wordItem.score} ${pluralize("point", wordItem.score)}`}
-			>
-				{wordItem.score}
-			</div>
-			{wordItem.jokersCount >= 1 && (
-				<>
-					<div
-						className="score-unrestricted"
-						title={`${wordItem.scoreUnrestricted} ${pluralize(
-							"point",
-							wordItem.scoreUnrestricted
-						)} sans restriction de lettres`}
-					>
-						{wordItem.scoreUnrestricted}
-					</div>
-					<div
-						className="jokers-count"
-						title={`Nécessite ${wordItem.jokersCount} ${pluralize(
-							"joker",
-							wordItem.jokersCount
-						)} en partie classique`}
-					>
-						({wordItem.jokersCount})
-					</div>
-				</>
-			)}
+			<WordValues wordValues={wordItem} hasHoverActions />
 			<CaretIcon orientation={"right"} />
 		</Link>
 	);

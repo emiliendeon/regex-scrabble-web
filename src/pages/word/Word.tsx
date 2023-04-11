@@ -10,6 +10,7 @@ import IconButton from "../../components/forms/iconButton/IconButton";
 import InvalidIcon from "../../components/icon/icons/InvalidIcon";
 import ValidIcon from "../../components/icon/icons/ValidIcon";
 import WordSelectors from "../../selectors/word";
+import WordValues from "../../components/wordValues/WordValues";
 
 const Word = () => {
 	const { word } = useParams();
@@ -34,6 +35,7 @@ const Word = () => {
 				<title>{wordData.title}</title>
 			</Helmet>
 			<h1>{wordData.word}</h1>
+			<WordValues wordValues={wordData} size="large" />
 			<div className="neighbors">
 				<div className="prefixes">
 					<h2>
