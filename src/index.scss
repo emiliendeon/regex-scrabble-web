@@ -27,7 +27,7 @@ a,
 	color: inherit;
 	text-decoration: inherit;
 
-	&:not(.raw) {
+	&:not(.raw):not(.social-icon) {
 		height: 32px;
 		padding: 0 16px;
 		background-color: #efefef;

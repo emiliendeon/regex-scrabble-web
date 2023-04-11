@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import { Helmet } from "react-helmet-async";
 import Meta from "../utils/meta";
+import { SocialIcon } from "react-social-icons";
 import { useMemo } from "react";
 
 const Root = () => {
@@ -20,6 +21,10 @@ const Root = () => {
 				<title>{Meta.title}</title>
 			</Helmet>
 			<Outlet />
+			<SocialIcon
+				url="https://github.com/emiliendeon/regex-scrabble-web"
+				label="Voir le projet GitHub"
+			/>
 		</>
 	);
 };
