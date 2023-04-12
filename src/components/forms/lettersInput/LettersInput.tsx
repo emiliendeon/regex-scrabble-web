@@ -9,16 +9,20 @@ type LettersInputProps = React.PropsWithRef<
 	Pick<TextInputProps, "placeholder" | "value" | "onChange"> & {
 		label?: string;
 		maxLettersCount?: number;
+		maxWildcardsCount?: number;
 	}
 >;
 
 const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
-	({ placeholder, value, onChange, label, maxLettersCount }, ref) => {
+	({ placeholder, value, onChange, label, maxLettersCount, maxWildcardsCount }, ref) => {
 		const localRef = useForwardedRef<HTMLInputElement>(ref);
 
 		const addLetter = (input: string) => {
-			if (input) {
-				onChange(`${value}${input}`.substring(0, maxLettersCount ?? 21));
+			const newValue = `${value}${input}`;
+			const wildcardsCount = newValue.match(/\./g)?.length ?? 0;
+
+			if (input && (!maxWildcardsCount || wildcardsCount <= maxWildcardsCount)) {
+				onChange(newValue.substring(0, maxLettersCount ?? 21));
 			}
 		};
 

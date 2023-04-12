@@ -1,4 +1,5 @@
 import { type Letter, type LetterOrWildcard, Letters } from "../types/letter";
+import { combinations } from "./array";
 
 type LettersCountsKey<IncludeWildcards extends boolean> = IncludeWildcards extends true
 	? LetterOrWildcard
@@ -50,7 +51,30 @@ const computeUniqueLetters = <IncludeWildcards extends boolean = false>(
 	return [...new Set(filterWildcards<IncludeWildcards>(word, includeWildcards)).values()];
 };
 
-const RegexParts = {
+const RegexBuilders = {
+	conjunction: (regexParts: string[]) =>
+		`(${regexParts.map((regexPart) => `(${regexPart})`).join("|")})`,
+
+	wordLength: ([min, max]: [number?, number?], pattern?: string) =>
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		`${pattern ?? "."}${min || max ? `{${min ?? 2},${max ?? ""}}` : ""}`,
+
+	minWordLength: (min: number) => `(?=.{${min},})`,
+
+	maxWordLength: (max: number) => `(?!.{${max + 1},})`,
+
+	minLettersCount: (letters: string, count: number) =>
+		`(?=(.*[${computeUniqueLetters(letters).join("")}]){${count},})`,
+
+	maxLettersCount: (letters: string, count: number) =>
+		`(?!(.*[${computeUniqueLetters(letters).join("")}]){${count + 1},})`,
+
+	minForeignLettersCount: (foreignFromLetters: string, count: number) =>
+		`(?=(.*[^${computeUniqueLetters(foreignFromLetters).join("")}]){${count},})`,
+
+	maxForeignLettersCount: (foreignFromLetters: string, count: number) =>
+		`(?!(.*[^${computeUniqueLetters(foreignFromLetters).join("")}]){${count + 1},})`,
+
 	minLettersCounts: (lettersCounts: LettersCounts<false>) => {
 		let regex = "";
 
@@ -86,20 +110,23 @@ const Regex = {
 	infixOf: (word: string) => `.*${word}.*`,
 
 	anagram: (word: string) => {
-		return [RegexParts.minLettersCounts(computeLettersCounts(word)), `.{${word.length}}`].join(
-			""
-		);
+		return [
+			RegexBuilders.minLettersCounts(computeLettersCounts(word)),
+			RegexBuilders.wordLength([word.length, word.length]),
+		].join("");
 	},
 
 	subAnagram: (word: string) => {
-		const lettersCounts = computeLettersCounts(word, true);
-		const wildcardsCount = lettersCounts["."] ?? 0;
+		const anagramCombinations = combinations<LetterOrWildcard>(
+			[...word] as LetterOrWildcard[],
+			2
+		);
 
-		return [
-			RegexParts.maxLettersCounts(lettersCounts, wildcardsCount),
-			`(?!(.*[^${computeUniqueLetters(word).join("")}]){${wildcardsCount + 1},})`,
-			`.{2,${word.length}}`,
-		].join("");
+		const regexParts = anagramCombinations.map((anagramCombination) =>
+			Regex.anagram(anagramCombination.join(""))
+		);
+
+		return RegexBuilders.conjunction(regexParts);
 	},
 
 	placements: (configuration: string, letters: string) => {
@@ -107,17 +134,54 @@ const Regex = {
 		const drawLettersCounts = computeLettersCounts(letters, true);
 		const lettersCounts = mergeLettersCounts([configurationLettersCounts, drawLettersCounts]);
 
-		const fixedLettersCount = configuration.length - (configurationLettersCounts["."] ?? 0);
-		const wildcardsCount = drawLettersCounts["."] ?? 0;
+		const configurationWildcardsCount = configurationLettersCounts["."] ?? 0;
+		const drawWildcardsCount = drawLettersCounts["."] ?? 0;
+		const fixedLettersCount = configuration.length - configurationWildcardsCount;
 
-		return [
-			RegexParts.maxLettersCounts(lettersCounts, wildcardsCount),
-			`(?!(.*[^${computeUniqueLetters(letters).join("")}]){${
-				fixedLettersCount + wildcardsCount + 1
-			},})`,
-			`(?!.{${fixedLettersCount + letters.length + 1},})`,
-			`.*${configuration}.*`,
-		].join("");
+		const commonLettersCount = [...configuration].filter(
+			(letter) => letter !== "." && letters.includes(letter)
+		).length;
+
+		const uniqueConfigurationLettersJoined = computeUniqueLetters(configuration).join("");
+		const uniqueDrawLettersJoined = computeUniqueLetters(letters).join("");
+
+		const configurationPart = `.*${configuration}.*`;
+
+		const regexParts = [];
+
+		for (
+			let wordLength = configuration.length;
+			wordLength <= fixedLettersCount + letters.length;
+			wordLength++
+		) {
+			const configurationWildcardsCount = wordLength - fixedLettersCount;
+
+			const minNonConfigurationLettersCount = Math.max(
+				configurationWildcardsCount - drawWildcardsCount - commonLettersCount,
+				0
+			);
+
+			const minDrawLettersCount = Math.max(
+				configurationWildcardsCount - drawWildcardsCount + commonLettersCount,
+				0
+			);
+
+			regexParts.push(
+				[
+					RegexBuilders.maxLettersCounts(lettersCounts),
+					RegexBuilders.minLettersCount(uniqueDrawLettersJoined, minDrawLettersCount),
+					RegexBuilders.minForeignLettersCount(
+						uniqueConfigurationLettersJoined,
+						minNonConfigurationLettersCount
+					),
+					RegexBuilders.minWordLength(wordLength),
+					RegexBuilders.maxWordLength(wordLength),
+					configurationPart,
+				].join("")
+			);
+		}
+
+		return RegexBuilders.conjunction(regexParts);
 	},
 };
 

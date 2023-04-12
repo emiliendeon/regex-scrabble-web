@@ -57,7 +57,7 @@ type SearchHelper = {
 	label: string;
 	title: string;
 	inputType?: "letters-input";
-	allowWildcards?: true;
+	maxWildcardsCount?: number;
 	autoSort?: DictionaryStore["sorting"];
 };
 
@@ -78,7 +78,7 @@ export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
 		label: "Tirage",
 		title: "Tous les mots possibles avec...",
 		inputType: "letters-input",
-		allowWildcards: true,
+		maxWildcardsCount: 4,
 		autoSort: {
 			criterion: "LENGTH",
 			mode: "DESC",
@@ -88,6 +88,5 @@ export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
 		label: "Anagrammes",
 		title: "Anagrammes",
 		inputType: "letters-input",
-		allowWildcards: true,
 	},
 };

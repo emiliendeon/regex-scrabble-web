@@ -53,6 +53,7 @@ const Placements = () => {
 					<LettersInput
 						label="Lettres à placer"
 						maxLettersCount={7}
+						maxWildcardsCount={4}
 						value={localLetters}
 						onChange={(x) => {
 							setLocalLetters(x);

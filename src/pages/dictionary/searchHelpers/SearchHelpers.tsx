@@ -72,6 +72,7 @@ const SearchHelpers = () => {
 				{currentHelper?.inputType === "letters-input" ? (
 					<LettersInput
 						ref={textInputRef}
+						maxWildcardsCount={currentHelper.maxWildcardsCount}
 						value={input}
 						onChange={(x) => {
 							setInput(x);
