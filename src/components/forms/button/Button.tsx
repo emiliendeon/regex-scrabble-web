@@ -1,13 +1,14 @@
 import "./button.scss";
 
-export type ButtonProps = {
-	className?: string;
+import { type PropsWithClassName } from "../../../types/component";
+
+export type ButtonProps = PropsWithClassName<{
 	type?: "button" | "submit";
 	label: string;
 	title?: string;
 	disabled?: boolean;
 	onClick?: () => void;
-};
+}>;
 
 const Button = ({ className, type, label, title, disabled, onClick }: ButtonProps) => {
 	const onLocalClick = () => {

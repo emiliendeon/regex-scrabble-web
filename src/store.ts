@@ -7,6 +7,7 @@ import {
 } from "react-redux";
 
 import DictionaryReducer from "./reducers/dictionary";
+import PlacementsReducer from "./reducers/placements";
 
 import { configureStore } from "@reduxjs/toolkit";
 import persistCombineReducers from "redux-persist/lib/persistCombineReducers";
@@ -21,6 +22,7 @@ const persistConfig = {
 
 const rootReducer = persistCombineReducers(persistConfig, {
 	dictionary: DictionaryReducer,
+	placements: PlacementsReducer,
 });
 
 const store = configureStore({

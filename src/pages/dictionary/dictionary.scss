@@ -3,7 +3,6 @@
 #dictionary {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
 
 	.search {
 		position: relative;
@@ -32,14 +31,7 @@
 		box-sizing: border-box;
 		height: calc(100% - 160px);
 
-		.count {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 8px 0;
-		}
-
-		.lazy-list {
+		.words-list {
 			height: 100%;
 			padding: 0 0 80px;
 		}
@@ -60,7 +52,7 @@
 		.result {
 			height: calc(100% - 144px);
 
-			.lazy-list {
+			.words-list {
 				padding: 0 0 100px;
 			}
 		}

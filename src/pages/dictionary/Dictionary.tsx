@@ -1,19 +1,16 @@
 import "./dictionary.scss";
 
 import { useDispatch, useSelector } from "../../store";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "../../components/forms/button/Button";
 import { DictionaryActions } from "../../reducers/dictionary";
 import IconButton from "../../components/forms/iconButton/IconButton";
-import LazyList from "../../components/lazyList/LazyList";
 import SearchHelpers from "./searchHelpers/SearchHelpers";
 import Sorting from "./sorting/Sorting";
 import TextInput from "../../components/forms/textInput/TextInput";
-import WordItem from "../../components/wordItem/WordItem";
-import { type WordItem as WordItemType } from "../../types/word";
+import WordsList from "../../components/wordsList/WordsList";
 import WordsSelectors from "../../selectors/words";
-import { pluralize } from "../../utils/string";
 
 const Dictionary = () => {
 	const dispatch = useDispatch();
@@ -38,10 +35,6 @@ const Dictionary = () => {
 		dispatch(DictionaryActions.resetSearch());
 	};
 
-	const wordsCount = useMemo(() => {
-		return matchedWords.length;
-	}, [matchedWords]);
-
 	return (
 		<div id="dictionary">
 			<div className="search">
@@ -61,16 +54,7 @@ const Dictionary = () => {
 				<Sorting />
 			</div>
 			<div className="result">
-				<LazyList<WordItemType>
-					items={matchedWords}
-					headerComponent={() => (
-						<div className="count">
-							{wordsCount} {pluralize("mot", wordsCount)}{" "}
-							{pluralize("trouvé", wordsCount)}
-						</div>
-					)}
-					itemRenderer={({ item }) => <WordItem wordItem={item} />}
-				/>
+				<WordsList words={matchedWords} />
 			</div>
 		</div>
 	);

@@ -3,22 +3,29 @@ import "./lettersInput.scss";
 import TextInput, { type TextInputProps } from "../textInput/TextInput";
 import { forwardRef, useMemo } from "react";
 import IconButton from "../iconButton/IconButton";
+import { useForwardedRef } from "../../../utils/react";
 
 type LettersInputProps = React.PropsWithRef<
-	Pick<TextInputProps, "placeholder" | "value" | "onChange">
+	Pick<TextInputProps, "placeholder" | "value" | "onChange"> & {
+		label?: string;
+		maxLettersCount?: number;
+	}
 >;
 
 const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
-	({ placeholder, value, onChange }, ref) => {
+	({ placeholder, value, onChange, label, maxLettersCount }, ref) => {
+		const localRef = useForwardedRef<HTMLInputElement>(ref);
+
 		const addLetter = (input: string) => {
 			if (input) {
-				onChange(`${value}${input}`);
+				onChange(`${value}${input}`.substring(0, maxLettersCount ?? 21));
 			}
 		};
 
 		const removeLetter = (letter: string) => {
 			const replaceRegex = new RegExp(letter === "." ? "\\." : letter);
 			onChange(value.replace(replaceRegex, ""));
+			localRef.current?.focus();
 		};
 
 		const removeLastLetter = () => {
@@ -31,9 +38,10 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 
 		return (
 			<label className="letters-input">
+				{label && <div className="label">{label}</div>}
 				<div className="instruction">Saisir &quot;.&quot; pour ajouter un joker</div>
 				<TextInput
-					ref={ref}
+					ref={localRef}
 					type="letters"
 					placeholder={placeholder}
 					value=""

@@ -1,13 +1,13 @@
 import "./icon.scss";
 
 import { type IconName } from "../../types/icon";
+import { type PropsWithClassName } from "../../types/component";
 
-type IconProps = {
-	className?: string;
+type IconProps = PropsWithClassName<{
 	name: IconName;
 	label: string;
 	showTitle?: boolean;
-};
+}>;
 
 export type IconHOCProps = Partial<Pick<IconProps, "label">>;
 

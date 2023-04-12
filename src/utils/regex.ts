@@ -1,4 +1,4 @@
-import { type Letter, type LetterOrWildcard } from "../types/letter";
+import { type Letter, type LetterOrWildcard, Letters } from "../types/letter";
 
 type LettersCountsKey<IncludeWildcards extends boolean> = IncludeWildcards extends true
 	? LetterOrWildcard
@@ -32,6 +32,17 @@ const computeLettersCounts = <IncludeWildcards extends boolean = false>(
 	return lettersCounts;
 };
 
+const mergeLettersCounts = (lettersCountsArray: Array<LettersCounts<any>>) => {
+	return [...Letters, "."].reduce((acc, letter) => {
+		const letterCount = lettersCountsArray.reduce(
+			(count, lettersCounts) => count + (lettersCounts[letter as LetterOrWildcard] ?? 0),
+			0
+		);
+
+		return letterCount >= 1 ? { ...acc, [letter]: letterCount } : acc;
+	}, {});
+};
+
 const computeUniqueLetters = <IncludeWildcards extends boolean = false>(
 	word: string,
 	includeWildcards?: IncludeWildcards
@@ -40,7 +51,7 @@ const computeUniqueLetters = <IncludeWildcards extends boolean = false>(
 };
 
 const RegexParts = {
-	minLettersCounts: (lettersCounts: LettersCounts<any>) => {
+	minLettersCounts: (lettersCounts: LettersCounts<false>) => {
 		let regex = "";
 
 		for (const [letter, count] of Object.entries(lettersCounts)) {
@@ -50,11 +61,13 @@ const RegexParts = {
 		return regex;
 	},
 
-	maxLettersCounts: (lettersCounts: LettersCounts<any>) => {
+	maxLettersCounts: (lettersCounts: LettersCounts<any>, wildcardsCount?: number) => {
 		let regex = "";
 
-		for (const [letter, count] of Object.entries(lettersCounts)) {
-			regex += `(?!(.*${letter}){${count + 1},})`;
+		for (const [letter, count] of Object.entries(lettersCounts).filter(
+			([letter]) => letter !== "."
+		)) {
+			regex += `(?!(.*${letter}){${count + (wildcardsCount ?? 0) + 1},})`;
 		}
 
 		return regex;
@@ -82,20 +95,28 @@ const Regex = {
 		const lettersCounts = computeLettersCounts(word, true);
 		const wildcardsCount = lettersCounts["."] ?? 0;
 
-		const maxLettersCounts = Object.entries(lettersCounts)
-			.filter(([letter]) => letter !== ".")
-			.reduce(
-				(acc, [letter, count]) => ({
-					...acc,
-					[letter]: count + wildcardsCount,
-				}),
-				{}
-			);
-
 		return [
-			RegexParts.maxLettersCounts(maxLettersCounts),
+			RegexParts.maxLettersCounts(lettersCounts, wildcardsCount),
 			`(?!(.*[^${computeUniqueLetters(word).join("")}]){${wildcardsCount + 1},})`,
 			`.{2,${word.length}}`,
+		].join("");
+	},
+
+	placements: (configuration: string, letters: string) => {
+		const configurationLettersCounts = computeLettersCounts(configuration, true);
+		const drawLettersCounts = computeLettersCounts(letters, true);
+		const lettersCounts = mergeLettersCounts([configurationLettersCounts, drawLettersCounts]);
+
+		const fixedLettersCount = configuration.length - (configurationLettersCounts["."] ?? 0);
+		const wildcardsCount = drawLettersCounts["."] ?? 0;
+
+		return [
+			RegexParts.maxLettersCounts(lettersCounts, wildcardsCount),
+			`(?!(.*[^${computeUniqueLetters(letters).join("")}]){${
+				fixedLettersCount + wildcardsCount + 1
+			},})`,
+			`(?!.{${fixedLettersCount + letters.length + 1},})`,
+			`.*${configuration}.*`,
 		].join("");
 	},
 };

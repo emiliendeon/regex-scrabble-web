@@ -2,15 +2,18 @@ import "./lazyList.scss";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type LazyListProps<T> = {
+import { type PropsWithClassName } from "../../types/component";
+
+type LazyListProps<T> = PropsWithClassName<{
 	items: T[];
 	headerComponent?: React.ComponentType;
 	itemRenderer: React.ComponentType<{ item: T }>;
-};
+}>;
 
 const InitialDisplayedItemsCount = 100;
 
 const LazyList = <T extends string | object>({
+	className,
 	items,
 	headerComponent,
 	itemRenderer,
@@ -42,7 +45,7 @@ const LazyList = <T extends string | object>({
 	const ItemRendererComponent = itemRenderer;
 
 	return (
-		<div className="lazy-list" ref={lazyListRef} onScroll={onScroll}>
+		<div className={`lazy-list ${className ?? ""}`} ref={lazyListRef} onScroll={onScroll}>
 			{HeaderComponent && <HeaderComponent />}
 			<ul>
 				{displayedItems.map((item, index) => {

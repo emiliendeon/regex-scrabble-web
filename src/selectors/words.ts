@@ -1,5 +1,6 @@
 import { DefaultSortingOrder } from "../utils/dictionary";
 import { type DictionaryStore } from "../reducers/dictionary";
+import Regex from "../utils/regex";
 import { type Store } from "../store";
 import { WordComputers } from "../computers/word";
 import { type WordItem } from "../types/word";
@@ -8,6 +9,9 @@ import ods8Words from "../assets/ods8";
 
 const getSearch = (state: Store) => state.dictionary.search;
 const getSorting = (state: Store) => state.dictionary.sorting;
+
+const getConfiguration = (state: Store) => state.placements.configuration;
+const getLetters = (state: Store) => state.placements.letters;
 
 const WordsSelectors = {
 	bySearch: createSelector([getSearch, getSorting], (search, sorting): WordItem[] => {
@@ -52,6 +56,26 @@ const WordsSelectors = {
 			return [];
 		}
 	}),
+
+	byPlacements: createSelector(
+		[getConfiguration, getLetters],
+		(configuration, letters): WordItem[] => {
+			try {
+				const regex = new RegExp(`^${Regex.placements(configuration, letters)}$`, "i");
+
+				const words = ods8Words
+					.filter((ods8Word) => regex.test(ods8Word))
+					.map((ods8Word) => ({
+						word: ods8Word,
+						...WordComputers.values(ods8Word),
+					})) as WordItem[];
+
+				return words.sort((a, b) => b.score - a.score);
+			} catch (e) {
+				return [];
+			}
+		}
+	),
 };
 
 export default WordsSelectors;

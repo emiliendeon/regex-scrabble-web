@@ -3,6 +3,12 @@
 	flex-direction: column;
 	width: 320px;
 
+	.label {
+		margin-bottom: 4px;
+		color: #ffffff;
+		font-weight: bold;
+	}
+
 	.instruction {
 		font-size: 14px;
 		color: #2f2f2f;

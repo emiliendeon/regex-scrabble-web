@@ -1,0 +1,22 @@
+@use "src/dimens" as dimens;
+
+#menu {
+	flex: 0 0 auto;
+	display: flex;
+	height: dimens.$menu-height;
+	padding: 0 16px;
+	background-color: #2f2f2f;
+
+	a {
+		padding: 0 16px;
+		color: #ffffff;
+
+		&:hover {
+			background-color: #000000;
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		justify-content: space-evenly;
+	}
+}
