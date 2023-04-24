@@ -6,6 +6,7 @@ import CaretIcon from "../../icon/icons/CaretIcon";
 import CloseIcon from "../../icon/icons/CloseIcon";
 import { type IconName } from "../../../types/icon";
 import InvalidIcon from "../../icon/icons/InvalidIcon";
+import MenuIcon from "../../icon/icons/MenuIcon";
 import { type Orientable } from "../../../types/component";
 import ValidIcon from "../../icon/icons/ValidIcon";
 import { useMemo } from "react";
@@ -17,7 +18,7 @@ type IconButtonProps = Omit<ButtonProps, "label"> &
 				icon: Extract<IconName, "arrow" | "caret">;
 		  }>
 		| {
-				icon: Extract<IconName, "close" | "valid" | "invalid">;
+				icon: Extract<IconName, "close" | "menu" | "valid" | "invalid">;
 				orientation?: never;
 		  }
 	);
@@ -34,6 +35,7 @@ const IconButton = ({ type, icon, orientation, label, onClick }: IconButtonProps
 			arrow: ArrowIcon,
 			caret: CaretIcon,
 			close: CloseIcon,
+			menu: MenuIcon,
 			valid: ValidIcon,
 			invalid: InvalidIcon,
 		};
@@ -43,7 +45,7 @@ const IconButton = ({ type, icon, orientation, label, onClick }: IconButtonProps
 	return (
 		<button
 			type={type ?? "button"}
-			className="icon-button"
+			className={`icon-button ${icon}-icon-button`}
 			aria-label={label}
 			onClick={onLocalClick}
 		>

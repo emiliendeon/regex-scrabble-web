@@ -28,7 +28,7 @@ a,
 	color: inherit;
 	text-decoration: inherit;
 
-	:not(#menu) > &:not(.raw):not(.social-icon) {
+	:not(#menu > nav) > &:not(.raw):not(.social-icon) {
 		height: 32px;
 		padding: 0 16px;
 		background-color: #efefef;

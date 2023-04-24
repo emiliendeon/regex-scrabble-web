@@ -12,7 +12,7 @@ export type ButtonProps = PropsWithClassName<{
 
 const Button = ({ className, type, label, title, disabled, onClick }: ButtonProps) => {
 	const onLocalClick = () => {
-		if (onClick) {
+		if (onClick && !disabled) {
 			onClick();
 		}
 	};
