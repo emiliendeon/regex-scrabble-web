@@ -5,7 +5,7 @@ import { type Store } from "../store";
 import { WordComputers } from "../computers/word";
 import { type WordItem } from "../types/word";
 import { createSelector } from "@reduxjs/toolkit";
-import ods8Words from "../assets/ods8";
+import odsWords from "../assets/ods9";
 
 const getSearch = (state: Store) => state.dictionary.search;
 const getSorting = (state: Store) => state.dictionary.sorting;
@@ -18,11 +18,11 @@ const WordsSelectors = {
 		try {
 			const regex = new RegExp(`^${search}$`, "i");
 
-			const words = ods8Words
-				.filter((ods8Word) => regex.test(ods8Word))
-				.map((ods8Word) => ({
-					word: ods8Word,
-					...WordComputers.values(ods8Word),
+			const words = odsWords
+				.filter((odsWord) => regex.test(odsWord))
+				.map((odsWord) => ({
+					word: odsWord,
+					...WordComputers.values(odsWord),
 				})) as WordItem[];
 
 			const sort: {
@@ -63,11 +63,11 @@ const WordsSelectors = {
 			try {
 				const regex = new RegExp(`^${Regex.placements(configuration, letters)}$`, "i");
 
-				const words = ods8Words
-					.filter((ods8Word) => regex.test(ods8Word))
-					.map((ods8Word) => ({
-						word: ods8Word,
-						...WordComputers.values(ods8Word),
+				const words = odsWords
+					.filter((odsWord) => regex.test(odsWord))
+					.map((odsWord) => ({
+						word: odsWord,
+						...WordComputers.values(odsWord),
 					})) as WordItem[];
 
 				return words.sort((a, b) => b.score - a.score);

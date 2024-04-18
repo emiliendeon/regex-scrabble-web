@@ -4,7 +4,7 @@ import Regex from "../utils/regex";
 import { type Store } from "../store";
 import { type WordData } from "../types/word";
 import { createSelector } from "@reduxjs/toolkit";
-import ods8Words from "../assets/ods8";
+import odsWords from "../assets/ods9";
 
 const getWord = (_state: Store, word: string | undefined) => word;
 
@@ -16,7 +16,7 @@ const WordSelectors = {
 
 		const wordFormatted = word.toUpperCase();
 
-		if (!ods8Words.includes(wordFormatted)) {
+		if (!odsWords.includes(wordFormatted)) {
 			return null;
 		}
 
@@ -39,32 +39,32 @@ const WordSelectors = {
 
 			prefixes1: {
 				search: prefixes1Search,
-				words: ods8Words
-					.filter((ods8Word) => prefixes1Regex.test(ods8Word))
-					.map((ods8Word) => ({
-						word: ods8Word,
-						prefix: WordProcessors.prefix1(ods8Word),
+				words: odsWords
+					.filter((odsWord) => prefixes1Regex.test(odsWord))
+					.map((odsWord) => ({
+						word: odsWord,
+						prefix: WordProcessors.prefix1(odsWord),
 					})),
 			},
 
 			suffixes1: {
 				search: suffixes1Search,
-				words: ods8Words
-					.filter((ods8Word) => suffixes1Regex.test(ods8Word))
-					.map((ods8Word) => ({
-						word: ods8Word,
-						suffix: WordProcessors.suffix1(ods8Word),
+				words: odsWords
+					.filter((odsWord) => suffixes1Regex.test(odsWord))
+					.map((odsWord) => ({
+						word: odsWord,
+						suffix: WordProcessors.suffix1(odsWord),
 					})),
 			},
 
-			prefixOf: { word: prefixOfWord, valid: ods8Words.includes(prefixOfWord) },
+			prefixOf: { word: prefixOfWord, valid: odsWords.includes(prefixOfWord) },
 
-			suffixOf: { word: suffixOfWord, valid: ods8Words.includes(suffixOfWord) },
+			suffixOf: { word: suffixOfWord, valid: odsWords.includes(suffixOfWord) },
 
 			anagrams: {
 				search: anagramsSearch,
-				words: ods8Words.filter(
-					(ods8Word) => ods8Word !== wordFormatted && anagramsRegex.test(ods8Word)
+				words: odsWords.filter(
+					(odsWord) => odsWord !== wordFormatted && anagramsRegex.test(odsWord)
 				),
 			},
 
