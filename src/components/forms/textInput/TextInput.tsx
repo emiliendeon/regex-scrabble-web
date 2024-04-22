@@ -4,17 +4,27 @@ import { type FormatType, formatInput } from "../../../utils/string";
 import IconButton from "../iconButton/IconButton";
 import { forwardRef } from "react";
 
-export type TextInputProps = React.PropsWithRef<{
-	type?: FormatType;
-	placeholder?: string;
-	value: string;
-	onChange: (value: string) => void;
-	onDelete?: () => void;
-	onReset?: () => void;
-}>;
+export type TextInputProps = React.PropsWithRef<
+	{
+		type?: FormatType;
+		placeholder?: string;
+		value: string;
+		onChange: (value: string) => void;
+		onDelete?: () => void;
+	} & (
+		| {
+				resetable: true;
+				onReset?: () => void;
+		  }
+		| {
+				resetable?: false;
+				onReset?: never;
+		  }
+	)
+>;
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-	({ type, placeholder, value, onChange, onDelete, onReset }, ref) => {
+	({ type, placeholder, value, resetable, onChange, onDelete, onReset }, ref) => {
 		const onLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = type ? formatInput[type](event.target.value) : event.target.value;
 			onChange(newValue);
@@ -35,7 +45,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 		};
 
 		return (
-			<div className="text-input">
+			<div className={`text-input ${resetable ? "resetable" : ""}`}>
 				<input
 					ref={ref}
 					type="text"
@@ -44,7 +54,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 					onChange={onLocalChange}
 					onKeyUp={onLocalKeyUp}
 				/>
-				{onReset && (
+				{resetable && (
 					<IconButton icon="close" label="Réinitialiser" onClick={onLocalReset} />
 				)}
 			</div>

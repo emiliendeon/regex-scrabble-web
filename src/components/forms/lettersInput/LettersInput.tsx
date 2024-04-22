@@ -49,6 +49,7 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 					type="letters"
 					placeholder={placeholder}
 					value=""
+					resetable
 					onChange={addLetter}
 					onDelete={removeLastLetter}
 					onReset={() => {

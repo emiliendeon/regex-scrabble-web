@@ -22,6 +22,16 @@
 		width: 16px;
 		height: 16px;
 		filter: invert(0.6);
+
+		&:hover {
+			filter: invert(0.4);
+		}
+	}
+
+	&.resetable {
+		input {
+			padding-right: 28px;
+		}
 	}
 
 	@media screen and (max-width: 575px) {

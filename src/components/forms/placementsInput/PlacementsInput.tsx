@@ -34,6 +34,7 @@ const PlacementsInput = forwardRef<HTMLInputElement, PlacementsInputProps>(
 					type="letters"
 					placeholder={placeholder}
 					value=""
+					resetable
 					onChange={addLetter}
 					onDelete={removeLastLetter}
 					onReset={() => {

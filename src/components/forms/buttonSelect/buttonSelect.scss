@@ -5,5 +5,10 @@
 		&:not(:first-child) {
 			border-left: 1px solid rgba(#2f2f2f, 0.2);
 		}
+
+		&:disabled {
+			background-color: #2f2f2f;
+			color: #ffffff;
+		}
 	}
 }

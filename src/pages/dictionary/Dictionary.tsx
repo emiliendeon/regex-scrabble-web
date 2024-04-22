@@ -1,11 +1,10 @@
 import "./dictionary.scss";
 
 import { useDispatch, useSelector } from "../../store";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Button from "../../components/forms/button/Button";
 import { DictionaryActions } from "../../reducers/dictionary";
-import IconButton from "../../components/forms/iconButton/IconButton";
 import SearchHelpers from "./searchHelpers/SearchHelpers";
 import Sorting from "./sorting/Sorting";
 import TextInput from "../../components/forms/textInput/TextInput";
@@ -20,7 +19,14 @@ const Dictionary = () => {
 
 	const [localSearch, setLocalSearch] = useState(search);
 
+	const [isSearchButtonDebounced, setSearchButtonDebounced] = useState(false);
+
+	const isSearchButtonDisabled = useMemo(() => {
+		return localSearch === "" || isSearchButtonDebounced;
+	}, [isSearchButtonDebounced, localSearch]);
+
 	useEffect(() => {
+		setSearchButtonDebounced(true);
 		setLocalSearch(search);
 	}, [search]);
 
@@ -31,24 +37,27 @@ const Dictionary = () => {
 	};
 
 	const resetSearch = () => {
-		setLocalSearch("");
 		dispatch(DictionaryActions.resetSearch());
+	};
+
+	const onChangeLocalSearch = (value: string) => {
+		setLocalSearch(value);
+		setSearchButtonDebounced(false);
 	};
 
 	return (
 		<div id="dictionary">
 			<div className="search">
 				<form className="main" onSubmit={setSearch}>
-					<IconButton icon="close" label={"Réinitialiser"} onClick={resetSearch} />
 					<TextInput
 						type="search"
 						placeholder="Saisir un mot ou un motif"
 						value={localSearch}
-						onChange={(x) => {
-							setLocalSearch(x);
-						}}
+						resetable
+						onChange={onChangeLocalSearch}
+						onReset={resetSearch}
 					/>
-					<Button type="submit" label="Rechercher" />
+					<Button type="submit" label="Rechercher" disabled={isSearchButtonDisabled} />
 				</form>
 				<SearchHelpers />
 				<Sorting />

@@ -1,7 +1,7 @@
 import "./placements.scss";
 
 import { useDispatch, useSelector } from "../../store";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Button from "../../components/forms/button/Button";
 import LettersInput from "../../components/forms/lettersInput/LettersInput";
@@ -19,6 +19,12 @@ const Placements = () => {
 	const [localConfiguration, setLocalConfiguration] = useState(configuration);
 	const [localLetters, setLocalLetters] = useState(letters);
 
+	const [isSearchButtonDebounced, setSearchButtonDebounced] = useState(false);
+
+	const isSearchButtonDisabled = useMemo(() => {
+		return localConfiguration === "" || localLetters === "" || isSearchButtonDebounced;
+	}, [isSearchButtonDebounced, localConfiguration, localLetters]);
+
 	useEffect(() => {
 		setLocalConfiguration(configuration);
 	}, [configuration]);
@@ -30,6 +36,8 @@ const Placements = () => {
 	const setSearch = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
+		setSearchButtonDebounced(true);
+
 		if (localConfiguration && localLetters) {
 			dispatch(
 				PlacementsActions.set({
@@ -40,26 +48,32 @@ const Placements = () => {
 		}
 	};
 
+	const onChangeLocalConfiguration = (value: string) => {
+		setLocalConfiguration(value);
+		setSearchButtonDebounced(false);
+	};
+
+	const onChangeLocalLetters = (value: string) => {
+		setLocalLetters(value);
+		setSearchButtonDebounced(false);
+	};
+
 	return (
 		<div id="placements">
 			<div className="search">
 				<form className="main" onSubmit={setSearch}>
 					<PlacementsInput
 						value={localConfiguration}
-						onChange={(x) => {
-							setLocalConfiguration(x);
-						}}
+						onChange={onChangeLocalConfiguration}
 					/>
 					<LettersInput
 						label="Lettres à placer"
 						maxLettersCount={7}
 						maxWildcardsCount={4}
 						value={localLetters}
-						onChange={(x) => {
-							setLocalLetters(x);
-						}}
+						onChange={onChangeLocalLetters}
 					/>
-					<Button type="submit" label="Rechercher" />
+					<Button type="submit" label="Rechercher" disabled={isSearchButtonDisabled} />
 				</form>
 			</div>
 			<div className="result">
