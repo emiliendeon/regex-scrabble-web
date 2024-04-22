@@ -33,7 +33,7 @@
 
 		.words-list {
 			height: 100%;
-			padding: 0 0 80px;
+			padding: 0 0 100px;
 		}
 	}
 
@@ -51,10 +51,6 @@
 
 		.result {
 			height: calc(100% - 144px);
-
-			.words-list {
-				padding: 0 0 100px;
-			}
 		}
 	}
 }
