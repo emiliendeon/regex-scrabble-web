@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "../../store";
 import { useEffect, useMemo, useState } from "react";
 
 import Button from "../../components/forms/button/Button";
+import IconButton from "../../components/forms/iconButton/IconButton";
 import LettersInput from "../../components/forms/lettersInput/LettersInput";
 import { PlacementsActions } from "../../reducers/placements";
 import PlacementsInput from "../../components/forms/placementsInput/PlacementsInput";
@@ -19,6 +20,7 @@ const Placements = () => {
 	const [localConfiguration, setLocalConfiguration] = useState(configuration);
 	const [localLetters, setLocalLetters] = useState(letters);
 
+	const [isSearchFormVisible, setSearchFormVisible] = useState(true);
 	const [isSearchButtonDebounced, setSearchButtonDebounced] = useState(false);
 
 	const isSearchButtonDisabled = useMemo(() => {
@@ -59,7 +61,7 @@ const Placements = () => {
 	};
 
 	return (
-		<div id="placements">
+		<div id="placements" className={isSearchFormVisible ? "search-form-visible" : ""}>
 			<div className="search">
 				<form className="main" onSubmit={setSearch}>
 					<PlacementsInput
@@ -75,6 +77,18 @@ const Placements = () => {
 					/>
 					<Button type="submit" label="Rechercher" disabled={isSearchButtonDisabled} />
 				</form>
+				<IconButton
+					icon="caret"
+					label={
+						isSearchFormVisible
+							? "Réduire le formulaire de recherche"
+							: "Afficher le formulaire de recherche"
+					}
+					orientation={isSearchFormVisible ? "up" : "down"}
+					onClick={() => {
+						setSearchFormVisible((prev) => !prev);
+					}}
+				/>
 			</div>
 			<div className="result">
 				<WordsList words={matchedWords} />

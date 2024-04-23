@@ -15,8 +15,8 @@ const Menu = () => {
 	}, [pathname]);
 
 	return (
-		<div id="menu">
-			<nav className={isMobileMenuVisible ? undefined : "hidden"}>
+		<div id="menu" className={isMobileMenuVisible ? "mobile-menu-visible" : ""}>
+			<nav>
 				<NavLink to="/">Dictionnaire</NavLink>
 				<NavLink to="/placements">Placements</NavLink>
 			</nav>

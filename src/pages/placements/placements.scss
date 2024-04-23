@@ -40,6 +40,10 @@
 				margin-top: 49px;
 			}
 		}
+
+		> .icon-button {
+			display: none;
+		}
 	}
 
 	.result {
@@ -83,10 +87,38 @@
 					margin-top: 16px;
 				}
 			}
+
+			> .icon-button {
+				display: flex;
+				position: absolute;
+				bottom: 10px;
+				right: 16px;
+				width: 16px;
+				height: 16px;
+				filter: invert(1);
+			}
 		}
 
 		.result {
 			height: calc(100% - 320px);
+		}
+
+		&:not(.search-form-visible) {
+			.search {
+				height: 40px;
+
+				.main {
+					display: none;
+				}
+
+				> .icon-button {
+					bottom: 16px;
+				}
+			}
+
+			.result {
+				height: calc(100% - 40px);
+			}
 		}
 	}
 
