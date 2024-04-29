@@ -62,11 +62,11 @@
 		.close-icon-button {
 			display: flex;
 		}
-	}
 
-	&:not(.mobile-menu-visible) {
-		> nav {
-			display: none;
+		&:not(.mobile-menu-visible) {
+			> nav {
+				display: none;
+			}
 		}
 	}
 }
