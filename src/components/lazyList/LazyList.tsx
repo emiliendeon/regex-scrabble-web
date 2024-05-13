@@ -3,6 +3,7 @@ import "./lazyList.scss";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { type PropsWithClassName } from "../../types/component";
+import clsx from "clsx";
 
 type LazyListProps<T> = PropsWithClassName<{
 	items: T[];
@@ -45,7 +46,7 @@ const LazyList = <T extends string | object>({
 	const ItemRendererComponent = itemRenderer;
 
 	return (
-		<div className={`lazy-list ${className ?? ""}`} ref={lazyListRef} onScroll={onScroll}>
+		<div className={clsx("lazy-list", className)} ref={lazyListRef} onScroll={onScroll}>
 			{HeaderComponent && <HeaderComponent />}
 			<ul>
 				{displayedItems.map((item, index) => {

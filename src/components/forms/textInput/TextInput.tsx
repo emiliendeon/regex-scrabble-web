@@ -2,6 +2,7 @@ import "./textInput.scss";
 
 import { type FormatType, formatInput } from "../../../utils/string";
 import IconButton from "../iconButton/IconButton";
+import clsx from "clsx";
 import { forwardRef } from "react";
 
 export type TextInputProps = React.PropsWithRef<
@@ -45,7 +46,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 		};
 
 		return (
-			<div className={`text-input ${resetable ? "resetable" : ""}`}>
+			<div className={clsx("text-input", { resetable })}>
 				<input
 					ref={ref}
 					type="text"

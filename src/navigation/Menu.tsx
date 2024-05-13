@@ -4,6 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import IconButton from "../components/forms/iconButton/IconButton";
+import clsx from "clsx";
 
 const Menu = () => {
 	const { pathname } = useLocation();
@@ -15,7 +16,7 @@ const Menu = () => {
 	}, [pathname]);
 
 	return (
-		<div id="menu" className={isMobileMenuVisible ? "mobile-menu-visible" : ""}>
+		<div id="menu" className={clsx({ "mobile-menu-visible": isMobileMenuVisible })}>
 			<nav>
 				<NavLink to="/">Dictionnaire</NavLink>
 				<NavLink to="/placements">Placements</NavLink>

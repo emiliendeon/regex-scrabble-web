@@ -1,6 +1,7 @@
 import "./button.scss";
 
 import { type PropsWithClassName } from "../../../types/component";
+import clsx from "clsx";
 
 export type ButtonProps = PropsWithClassName<{
 	type?: "button" | "submit";
@@ -20,7 +21,7 @@ const Button = ({ className, type, label, title, disabled, onClick }: ButtonProp
 	return (
 		<button
 			type={type ?? "button"}
-			className={`button ${className ?? ""}`}
+			className={clsx("button", className)}
 			title={title}
 			disabled={disabled}
 			onClick={onLocalClick}

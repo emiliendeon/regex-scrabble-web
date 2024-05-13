@@ -1,6 +1,7 @@
 import "./wordValues.scss";
 
 import { type WordValues as WordValuesType } from "../../types/word";
+import clsx from "clsx";
 import { pluralize } from "../../utils/string";
 
 type WordValuesProps = {
@@ -12,9 +13,9 @@ type WordValuesProps = {
 const WordValues = ({ wordValues, size, hasHoverActions }: WordValuesProps) => {
 	return (
 		<div
-			className={`word-values ${size ?? "small"} ${
-				hasHoverActions ? "has-hover-actions" : ""
-			}`}
+			className={clsx("word-values", size ?? "small", {
+				"has-hover-actions": hasHoverActions,
+			})}
 		>
 			<div
 				className="score"

@@ -2,6 +2,7 @@ import "./icon.scss";
 
 import { type IconName } from "../../types/icon";
 import { type PropsWithClassName } from "../../types/component";
+import clsx from "clsx";
 
 type IconProps = PropsWithClassName<{
 	name: IconName;
@@ -19,7 +20,7 @@ export type IconHOC<T extends IconHOCProps = IconHOCProps> = (
 const Icon: IconBaseComponent = ({ className, name, label, showTitle }: IconProps) => {
 	return (
 		<img
-			className={`icon ${name}-icon ${className ?? ""}`}
+			className={clsx("icon", `${name}-icon`, className)}
 			src={`/assets/icons/${name}.png`}
 			alt={label}
 			title={showTitle === false ? undefined : label}

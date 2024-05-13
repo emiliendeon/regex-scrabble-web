@@ -10,6 +10,7 @@ import { PlacementsActions } from "../../reducers/placements";
 import PlacementsInput from "../../components/forms/placementsInput/PlacementsInput";
 import WordsList from "../../components/wordsList/WordsList";
 import WordsSelectors from "../../selectors/words";
+import clsx from "clsx";
 
 const Placements = () => {
 	const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const Placements = () => {
 	};
 
 	return (
-		<div id="placements" className={isSearchFormVisible ? "search-form-visible" : ""}>
+		<div id="placements" className={clsx({ "search-form-visible": isSearchFormVisible })}>
 			<div className="search">
 				<form className="main" onSubmit={setSearch}>
 					<PlacementsInput
