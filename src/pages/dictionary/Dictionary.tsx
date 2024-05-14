@@ -5,11 +5,12 @@ import { useEffect, useMemo, useState } from "react";
 
 import Button from "../../components/forms/button/Button";
 import { DictionaryActions } from "../../reducers/dictionary";
+import SearchForm from "../../components/forms/searchForm/SearchForm";
 import SearchHelpers from "./searchHelpers/SearchHelpers";
 import Sorting from "./sorting/Sorting";
 import TextInput from "../../components/forms/textInput/TextInput";
-import WordsList from "../../components/wordsList/WordsList";
 import WordsSelectors from "../../selectors/words";
+import { useDebounce } from "../../utils/react";
 
 const Dictionary = () => {
 	const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Dictionary = () => {
 
 	const [localSearch, setLocalSearch] = useState(search);
 
-	const [isSearchButtonDebounced, setSearchButtonDebounced] = useState(false);
+	const [isSearchButtonDebounced, setSearchButtonDebounced] = useDebounce([localSearch]);
 
 	const isSearchButtonDisabled = useMemo(() => {
 		return localSearch === "" || isSearchButtonDebounced;
@@ -30,9 +31,7 @@ const Dictionary = () => {
 		setLocalSearch(search);
 	}, [search]);
 
-	const setSearch = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
+	const setSearch = () => {
 		dispatch(DictionaryActions.setSearch(localSearch));
 	};
 
@@ -40,31 +39,23 @@ const Dictionary = () => {
 		dispatch(DictionaryActions.resetSearch());
 	};
 
-	const onChangeLocalSearch = (value: string) => {
-		setLocalSearch(value);
-		setSearchButtonDebounced(false);
-	};
-
 	return (
 		<div id="dictionary">
-			<div className="search">
-				<form className="main" onSubmit={setSearch}>
+			<SearchForm matchedWords={matchedWords} onSubmit={setSearch}>
+				<div className="input">
 					<TextInput
 						type="search"
 						placeholder="Saisir un mot ou un motif"
 						value={localSearch}
 						resetable
-						onChange={onChangeLocalSearch}
+						onChange={setLocalSearch}
 						onReset={resetSearch}
 					/>
 					<Button type="submit" label="Rechercher" disabled={isSearchButtonDisabled} />
-				</form>
+				</div>
 				<SearchHelpers />
 				<Sorting />
-			</div>
-			<div className="result">
-				<WordsList words={matchedWords} />
-			</div>
+			</SearchForm>
 		</div>
 	);
 };

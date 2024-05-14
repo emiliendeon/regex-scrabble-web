@@ -3,15 +3,14 @@ import "./lists.scss";
 import { ListsActions, initialState } from "../../reducers/lists";
 import { useDispatch, useSelector } from "../../store";
 import { useMemo, useState } from "react";
+
 import Button from "../../components/forms/button/Button";
-import IconButton from "../../components/forms/iconButton/IconButton";
-import { type Letter } from "../../types/letter";
 import LettersSelect from "../../components/forms/lettersSelect/LettersSelect";
 import NumberInput from "../../components/forms/numberInput/NumberInput";
-import WordsList from "../../components/wordsList/WordsList";
+import SearchForm from "../../components/forms/searchForm/SearchForm";
 import WordsSelectors from "../../selectors/words";
 import { areEqual } from "../../utils/array";
-import clsx from "clsx";
+import { useDebounce } from "../../utils/react";
 
 const Lists = () => {
 	const dispatch = useDispatch();
@@ -22,8 +21,10 @@ const Lists = () => {
 	const [localLength, setLocalLength] = useState(length);
 	const [localLetters, setLocalLetters] = useState(letters);
 
-	const [isSearchFormVisible, setSearchFormVisible] = useState(true);
-	const [isSearchButtonDebounced, setSearchButtonDebounced] = useState(false);
+	const [isSearchButtonDebounced, setSearchButtonDebounced] = useDebounce([
+		localLength,
+		localLetters,
+	]);
 
 	const isSearchButtonDisabled = useMemo(() => {
 		return localLetters.length === 0 || isSearchButtonDebounced;
@@ -35,24 +36,13 @@ const Lists = () => {
 
 	const onChangeLocalMinLength = (value: number) => {
 		setLocalLength((prev) => [value, prev[1]]);
-		setSearchButtonDebounced(false);
 	};
 
 	const onChangeLocalMaxLength = (value: number) => {
 		setLocalLength((prev) => [prev[0], value]);
-		setSearchButtonDebounced(false);
 	};
 
-	const onChangeLocalLetters = (values: Letter[]) => {
-		setLocalLetters(values);
-		setSearchButtonDebounced(false);
-	};
-
-	const setSearch = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		setSearchButtonDebounced(true);
-
+	const setSearch = () => {
 		dispatch(
 			ListsActions.set({
 				length: localLength,
@@ -69,56 +59,46 @@ const Lists = () => {
 	};
 
 	return (
-		<div id="lists" className={clsx({ "search-form-visible": isSearchFormVisible })}>
-			<div className="search">
-				<form className="main" onSubmit={setSearch}>
-					<div className="length">
-						<NumberInput
-							label="Nombre de lettres minimum"
-							min={2}
-							max={21}
-							value={localLength[0]}
-							onChange={onChangeLocalMinLength}
-						/>
-						<NumberInput
-							label="Nombre de lettres maximum"
-							min={2}
-							max={21}
-							value={localLength[1]}
-							onChange={onChangeLocalMaxLength}
-						/>
-					</div>
-					<LettersSelect
-						label="Contenant au moins..."
-						multiple
-						values={localLetters}
-						onChange={onChangeLocalLetters}
+		<div id="lists">
+			<SearchForm
+				toggleableMobile
+				matchedWords={matchedWords}
+				onSubmit={setSearch}
+				onDebounce={() => {
+					setSearchButtonDebounced(true);
+				}}
+			>
+				<div className="length">
+					<NumberInput
+						label="Nombre de lettres minimum"
+						min={2}
+						max={21}
+						value={localLength[0]}
+						onChange={onChangeLocalMinLength}
 					/>
-					<div className="actions">
-						<Button type="submit" label="Générer" disabled={isSearchButtonDisabled} />
-						<Button
-							label="Réinitialiser"
-							disabled={isResetButtonDisabled}
-							onClick={resetSearch}
-						/>
-					</div>
-				</form>
-				<IconButton
-					icon="caret"
-					label={
-						isSearchFormVisible
-							? "Réduire le formulaire de recherche"
-							: "Afficher le formulaire de recherche"
-					}
-					orientation={isSearchFormVisible ? "up" : "down"}
-					onClick={() => {
-						setSearchFormVisible((prev) => !prev);
-					}}
+					<NumberInput
+						label="Nombre de lettres maximum"
+						min={2}
+						max={21}
+						value={localLength[1]}
+						onChange={onChangeLocalMaxLength}
+					/>
+				</div>
+				<LettersSelect
+					label="Contenant au moins..."
+					multiple
+					values={localLetters}
+					onChange={setLocalLetters}
 				/>
-			</div>
-			<div className="result">
-				<WordsList words={matchedWords} />
-			</div>
+				<div className="actions">
+					<Button type="submit" label="Générer" disabled={isSearchButtonDisabled} />
+					<Button
+						label="Réinitialiser"
+						disabled={isResetButtonDisabled}
+						onClick={resetSearch}
+					/>
+				</div>
+			</SearchForm>
 		</div>
 	);
 };

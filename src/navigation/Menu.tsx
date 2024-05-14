@@ -9,23 +9,23 @@ import clsx from "clsx";
 const Menu = () => {
 	const { pathname } = useLocation();
 
-	const [isMobileMenuVisible, setMobileMenuVisible] = useState(false);
+	const [isVisibleMobile, setVisibleMobile] = useState(false);
 
 	useEffect(() => {
-		setMobileMenuVisible(false);
+		setVisibleMobile(false);
 	}, [pathname]);
 
 	return (
-		<div id="menu" className={clsx({ "mobile-menu-visible": isMobileMenuVisible })}>
+		<div id="menu" className={clsx({ "visible-mobile": isVisibleMobile })}>
 			<nav>
 				<NavLink to="/">Dictionnaire</NavLink>
 				<NavLink to="/listes">Listes</NavLink>
 				<NavLink to="/placements">Placements</NavLink>
 			</nav>
 			<IconButton
-				icon={isMobileMenuVisible ? "close" : "menu"}
+				icon={isVisibleMobile ? "close" : "menu"}
 				onClick={() => {
-					setMobileMenuVisible((prev) => !prev);
+					setVisibleMobile((prev) => !prev);
 				}}
 			/>
 		</div>

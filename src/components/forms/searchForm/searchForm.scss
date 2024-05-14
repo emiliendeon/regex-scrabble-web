@@ -1,0 +1,71 @@
+@use "src/colors" as colors;
+
+.search-form {
+	flex: 1;
+
+	.search {
+		position: relative;
+		flex: 0 0 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		box-sizing: border-box;
+		padding: 0 32px;
+		background-color: colors.$primary;
+
+		.main {
+			display: flex;
+		}
+
+		> .icon-button {
+			display: none;
+		}
+	}
+
+	.result {
+		box-sizing: border-box;
+
+		.words-list {
+			padding: 0 0 140px;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		.search {
+			> .icon-button {
+				display: flex;
+				position: absolute;
+				bottom: 10px;
+				right: 16px;
+				width: 16px;
+				height: 16px;
+				filter: invert(1);
+			}
+		}
+
+		&:not(.visible-mobile) {
+			.search {
+				height: 40px !important;
+
+				.main {
+					display: none;
+				}
+
+				> .icon-button {
+					bottom: 16px;
+				}
+			}
+
+			.result {
+				height: calc(100% - 40px) !important;
+			}
+		}
+	}
+
+	@media screen and (max-width: 575px) {
+		.search {
+			padding: 0 16px;
+		}
+	}
+}

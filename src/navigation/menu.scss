@@ -38,7 +38,7 @@
 	@media screen and (max-width: 575px) {
 		justify-content: flex-end;
 		align-items: center;
-		padding: 0 12px;
+		padding: 0 16px;
 
 		> nav {
 			position: fixed;
@@ -63,7 +63,7 @@
 			display: flex;
 		}
 
-		&:not(.mobile-menu-visible) {
+		&:not(.visible-mobile) {
 			> nav {
 				display: none;
 			}
