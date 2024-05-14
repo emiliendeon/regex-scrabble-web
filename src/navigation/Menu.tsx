@@ -19,6 +19,7 @@ const Menu = () => {
 		<div id="menu" className={clsx({ "mobile-menu-visible": isMobileMenuVisible })}>
 			<nav>
 				<NavLink to="/">Dictionnaire</NavLink>
+				<NavLink to="/listes">Listes</NavLink>
 				<NavLink to="/placements">Placements</NavLink>
 			</nav>
 			<IconButton

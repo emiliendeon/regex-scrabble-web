@@ -1,0 +1,21 @@
+.number-input {
+	display: flex;
+	flex-direction: column;
+
+	.label {
+		margin-bottom: 4px;
+		color: #ffffff;
+		font-weight: bold;
+	}
+
+	input {
+		box-sizing: border-box;
+		width: 64px;
+		height: 32px;
+		padding: 0 8px;
+		background-color: #ffffff;
+		border: none;
+		font-family: inherit;
+		font-size: 16px;
+	}
+}

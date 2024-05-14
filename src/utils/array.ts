@@ -27,3 +27,9 @@ export const combinations = <T>(elements: T[], minLength?: number) => {
 	_combinations(elements, [], combs, minLength);
 	return combs;
 };
+
+export const areEqual = (array1: any[], array2: any[]) => {
+	return (
+		array1.length === array2.length && array1.every((value, index) => value === array2[index])
+	);
+};

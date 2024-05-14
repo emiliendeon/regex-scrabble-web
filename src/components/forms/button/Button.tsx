@@ -7,11 +7,12 @@ export type ButtonProps = PropsWithClassName<{
 	type?: "button" | "submit";
 	label: string;
 	title?: string;
+	selected?: boolean;
 	disabled?: boolean;
 	onClick?: () => void;
 }>;
 
-const Button = ({ className, type, label, title, disabled, onClick }: ButtonProps) => {
+const Button = ({ className, type, label, title, selected, disabled, onClick }: ButtonProps) => {
 	const onLocalClick = () => {
 		if (onClick && !disabled) {
 			onClick();
@@ -21,7 +22,7 @@ const Button = ({ className, type, label, title, disabled, onClick }: ButtonProp
 	return (
 		<button
 			type={type ?? "button"}
-			className={clsx("button", className)}
+			className={clsx("button", className, { selected })}
 			title={title}
 			disabled={disabled}
 			onClick={onLocalClick}

@@ -57,6 +57,7 @@ const SearchHelpers = () => {
 					key={searchHelperId}
 					label={searchHelper.label}
 					title={searchHelper.title}
+					selected={currentHelperId === searchHelperId}
 					onClick={() => {
 						onSelectHelper(searchHelperId as SearchHelperId);
 					}}

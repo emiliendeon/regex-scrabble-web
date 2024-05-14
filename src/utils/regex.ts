@@ -1,4 +1,5 @@
 import { type Letter, type LetterOrWildcard, Letters } from "../types/letter";
+import { type Range } from "../types/number";
 import { combinations } from "./array";
 
 type LettersCountsKey<IncludeWildcards extends boolean> = IncludeWildcards extends true
@@ -55,7 +56,7 @@ const RegexBuilders = {
 	conjunction: (regexParts: string[]) =>
 		`(${regexParts.map((regexPart) => `(${regexPart})`).join("|")})`,
 
-	wordLength: ([min, max]: [number?, number?], pattern?: string) =>
+	wordLength: ([min, max]: Partial<Range>, pattern?: string) =>
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		`${pattern ?? "."}${min || max ? `{${min ?? 2},${max ?? ""}}` : ""}`,
 
@@ -127,6 +128,15 @@ const Regex = {
 		);
 
 		return RegexBuilders.conjunction(regexParts);
+	},
+
+	lengthAndConjunctiveLetters: (length: Range, letters: Letter[]) => {
+		return [
+			RegexBuilders.minLettersCounts(
+				letters.reduce((acc, letter) => ({ ...acc, [letter]: 1 }), {})
+			),
+			RegexBuilders.wordLength(length),
+		].join("");
 	},
 
 	placements: (configuration: string, letters: string) => {

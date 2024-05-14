@@ -1,5 +1,6 @@
 import Dictionary from "../pages/dictionary/Dictionary";
 import Error from "./Error";
+import Lists from "../pages/lists/Lists";
 import Placements from "../pages/placements/Placements";
 import Root from "./Root";
 import Word from "../pages/word/Word";
@@ -15,12 +16,16 @@ const routes = [
 				element: <Dictionary />,
 			},
 			{
-				path: "mot/:word",
-				element: <Word />,
+				path: "listes",
+				element: <Lists />,
 			},
 			{
 				path: "placements",
 				element: <Placements />,
+			},
+			{
+				path: "mot/:word",
+				element: <Word />,
 			},
 		],
 	},

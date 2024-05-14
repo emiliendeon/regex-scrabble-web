@@ -1,14 +1,32 @@
 .button-select {
 	display: flex;
+	flex-direction: column;
 
-	.button {
-		&:not(:first-child) {
-			border-left: 1px solid rgba(#2f2f2f, 0.2);
+	.label {
+		margin-bottom: 4px;
+		color: #ffffff;
+		font-weight: bold;
+	}
+
+	.options {
+		display: flex;
+
+		.button {
+			&:not(:first-child) {
+				border-left: 1px solid rgba(#2f2f2f, 0.2);
+			}
 		}
+	}
 
-		&:disabled {
-			background-color: #2f2f2f;
-			color: #ffffff;
+	&.letters {
+		.options {
+			flex-wrap: wrap;
+			gap: 8px;
+
+			.button {
+				width: 32px;
+				padding: 0;
+			}
 		}
 	}
 }

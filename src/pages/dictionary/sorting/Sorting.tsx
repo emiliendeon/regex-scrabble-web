@@ -30,7 +30,7 @@ const Sorting = () => {
 					value: formatSortingValue(sortingOption),
 				}))}
 				value={sortingValue}
-				onClick={setSorting}
+				onChange={setSorting}
 			/>
 		</div>
 	);

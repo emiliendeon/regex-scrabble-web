@@ -36,6 +36,16 @@ const Placements = () => {
 		setLocalLetters(letters);
 	}, [letters]);
 
+	const onChangeLocalConfiguration = (value: string) => {
+		setLocalConfiguration(value);
+		setSearchButtonDebounced(false);
+	};
+
+	const onChangeLocalLetters = (value: string) => {
+		setLocalLetters(value);
+		setSearchButtonDebounced(false);
+	};
+
 	const setSearch = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -49,16 +59,6 @@ const Placements = () => {
 				})
 			);
 		}
-	};
-
-	const onChangeLocalConfiguration = (value: string) => {
-		setLocalConfiguration(value);
-		setSearchButtonDebounced(false);
-	};
-
-	const onChangeLocalLetters = (value: string) => {
-		setLocalLetters(value);
-		setSearchButtonDebounced(false);
 	};
 
 	return (
