@@ -1,7 +1,7 @@
 import Icon, { type IconHOC } from "../Icon";
 
-const InvalidIcon: IconHOC = ({ label }) => {
-	return <Icon name="invalid" label={label ?? "Invalide"} />;
+const InvalidIcon: IconHOC = ({ label, showTitle }) => {
+	return <Icon name="invalid" label={label} showTitle={showTitle} />;
 };
 
 export default InvalidIcon;

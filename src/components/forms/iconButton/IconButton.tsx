@@ -1,25 +1,30 @@
 import "./iconButton.scss";
 
+import {
+	type IconName,
+	type NonOrientableIconName,
+	type OrientableIconName,
+} from "../../../types/icon";
 import ArrowIcon from "../../icon/icons/ArrowIcon";
 import { type ButtonProps } from "../button/Button";
 import CaretIcon from "../../icon/icons/CaretIcon";
 import CloseIcon from "../../icon/icons/CloseIcon";
-import { type IconName } from "../../../types/icon";
 import InvalidIcon from "../../icon/icons/InvalidIcon";
 import MenuIcon from "../../icon/icons/MenuIcon";
 import { type Orientable } from "../../../types/component";
 import ValidIcon from "../../icon/icons/ValidIcon";
 import clsx from "clsx";
+import { computeIconLabel } from "../../../utils/icon";
 import { useMemo } from "react";
 
 type IconButtonProps = Omit<ButtonProps, "label"> &
 	Partial<Pick<ButtonProps, "label">> &
 	(
 		| Orientable<{
-				icon: Extract<IconName, "arrow" | "caret">;
+				icon: OrientableIconName;
 		  }>
 		| {
-				icon: Extract<IconName, "close" | "menu" | "valid" | "invalid">;
+				icon: NonOrientableIconName;
 				orientation?: never;
 		  }
 	);
@@ -43,14 +48,19 @@ const IconButton = ({ type, icon, orientation, label, onClick }: IconButtonProps
 		return iconComponents[icon];
 	}, [icon]);
 
+	const labelComputed = useMemo(() => {
+		return label ?? computeIconLabel(icon, orientation);
+	}, [icon, label, orientation]);
+
 	return (
 		<button
 			type={type ?? "button"}
 			className={clsx("icon-button", `${icon}-icon-button`)}
-			aria-label={label}
+			title={labelComputed}
+			aria-label={labelComputed}
 			onClick={onLocalClick}
 		>
-			<IconComponent label={label} orientation={orientation} />
+			<IconComponent label={labelComputed} orientation={orientation} />
 		</button>
 	);
 };

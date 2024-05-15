@@ -4,15 +4,8 @@ import { type Orientable } from "../../../types/component";
 
 type CaretIconProps = Orientable<IconHOCProps>;
 
-const CaretIcon: IconHOC<CaretIconProps> = ({ label, orientation }: CaretIconProps) => {
-	return (
-		<Icon
-			className={orientation}
-			name={"caret"}
-			label={label ?? "Voir le détail"}
-			showTitle={false}
-		/>
-	);
+const CaretIcon: IconHOC<CaretIconProps> = ({ label, showTitle, orientation }: CaretIconProps) => {
+	return <Icon name="caret" label={label} showTitle={showTitle} orientation={orientation} />;
 };
 
 export default CaretIcon;

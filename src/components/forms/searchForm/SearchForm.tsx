@@ -1,5 +1,6 @@
 import "./searchForm.scss";
 
+import { useLocation, useNavigate } from "react-router-dom";
 import IconButton from "../iconButton/IconButton";
 import { type WordItem } from "../../../types/word";
 import WordsList from "../../wordsList/WordsList";
@@ -20,12 +21,16 @@ const SearchForm = ({
 	onSubmit,
 	onDebounce,
 }: SearchFormProps) => {
+	const location = useLocation();
+	const navigate = useNavigate();
+
 	const [isVisibleMobile, setVisibleMobile] = useState(true);
 
 	const onLocalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		onDebounce?.();
+		navigate(location.pathname);
 		onSubmit();
 	};
 

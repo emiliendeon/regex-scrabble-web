@@ -1,6 +1,6 @@
 import "./word.scss";
 
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "../../store";
 
 import BackLink from "../../components/backLink/BackLink";
@@ -11,22 +11,34 @@ import InvalidIcon from "../../components/icon/icons/InvalidIcon";
 import ValidIcon from "../../components/icon/icons/ValidIcon";
 import WordSelectors from "../../selectors/word";
 import WordValues from "../../components/wordValues/WordValues";
+import { useMemo } from "react";
 
 const Word = () => {
 	const { word } = useParams();
+	const [searchParams] = useSearchParams();
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const wordData = useSelector((state) => WordSelectors.wordData(state, word));
 
+	if (!wordData) {
+		return <Navigate to={`/error?error-nonexistent-word=${word ?? ""}`} replace />;
+	}
+
+	const backLink = useMemo(() => {
+		const referer = searchParams.get("referer");
+
+		if (!referer || /^\/mot\//.test(referer)) {
+			return undefined;
+		}
+		return `${referer}#mot-${wordData.word.toLowerCase()}`;
+	}, [searchParams]);
+
 	const goToDictionary = (search: string) => {
 		dispatch(DictionaryActions.setSearch(search));
 		navigate("/");
 	};
-
-	if (!wordData) {
-		return <Navigate to={`/error?error-nonexistent-word=${word ?? ""}`} replace />;
-	}
 
 	return (
 		<div id="word">
@@ -34,6 +46,9 @@ const Word = () => {
 				<meta property="og:title" content={wordData.title} />
 				<title>{wordData.title}</title>
 			</Helmet>
+			<div className="links">
+				<BackLink to={backLink} />
+			</div>
 			<h1>{wordData.word}</h1>
 			<WordValues wordValues={wordData} size="large" />
 			<div className="neighbors">
@@ -107,9 +122,9 @@ const Word = () => {
 									{wordData.prefixOf.word}
 								</Link>
 								{wordData.prefixOf.valid ? (
-									<ValidIcon label="Oui" />
+									<ValidIcon showTitle />
 								) : (
-									<InvalidIcon label="Non" />
+									<InvalidIcon showTitle />
 								)}
 							</div>
 						</div>
@@ -123,9 +138,9 @@ const Word = () => {
 									{wordData.suffixOf.word}
 								</Link>
 								{wordData.suffixOf.valid ? (
-									<ValidIcon label="Oui" />
+									<ValidIcon showTitle />
 								) : (
-									<InvalidIcon label="Non" />
+									<InvalidIcon showTitle />
 								)}
 							</div>
 						</div>
@@ -156,10 +171,6 @@ const Word = () => {
 						<p className="none">Aucune</p>
 					)}
 				</div>
-			</div>
-			<div className="links">
-				<BackLink label="Précédent" />
-				<Link to="/">Retour au dictionnaire</Link>
 			</div>
 		</div>
 	);

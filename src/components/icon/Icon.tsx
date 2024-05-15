@@ -1,29 +1,35 @@
 import "./icon.scss";
 
 import { type IconName } from "../../types/icon";
-import { type PropsWithClassName } from "../../types/component";
+import { type Orientable } from "../../types/component";
 import clsx from "clsx";
+import { computeIconLabel } from "../../utils/icon";
+import { useMemo } from "react";
 
-type IconProps = PropsWithClassName<{
+type IconProps = Orientable<{
 	name: IconName;
-	label: string;
+	label?: string;
 	showTitle?: boolean;
 }>;
 
-export type IconHOCProps = Partial<Pick<IconProps, "label">>;
+export type IconHOCProps = Partial<Pick<IconProps, "label" | "showTitle">>;
 
 type IconBaseComponent = (props: IconProps) => React.ReactElement<"img">;
 export type IconHOC<T extends IconHOCProps = IconHOCProps> = (
 	props: T
 ) => React.ReactElement<IconBaseComponent>;
 
-const Icon: IconBaseComponent = ({ className, name, label, showTitle }: IconProps) => {
+const Icon: IconBaseComponent = ({ name, label, showTitle, orientation }: IconProps) => {
+	const labelComputed = useMemo(() => {
+		return label ?? computeIconLabel(name, orientation);
+	}, [name, label, orientation]);
+
 	return (
 		<img
-			className={clsx("icon", `${name}-icon`, className)}
+			className={clsx("icon", `${name}-icon`, orientation)}
 			src={`/assets/icons/${name}.png`}
-			alt={label}
-			title={showTitle === false ? undefined : label}
+			alt={labelComputed}
+			title={showTitle ? labelComputed : undefined}
 		/>
 	);
 };

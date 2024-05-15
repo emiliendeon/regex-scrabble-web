@@ -4,15 +4,8 @@ import { type Orientable } from "../../../types/component";
 
 type ArrowIconProps = Orientable<IconHOCProps>;
 
-const ArrowIcon: IconHOC<ArrowIconProps> = ({ label, orientation }: ArrowIconProps) => {
-	return (
-		<Icon
-			className={orientation}
-			name={"arrow"}
-			label={label ?? "Voir le détail"}
-			showTitle={false}
-		/>
-	);
+const ArrowIcon: IconHOC<ArrowIconProps> = ({ label, showTitle, orientation }: ArrowIconProps) => {
+	return <Icon name="arrow" label={label} showTitle={showTitle} orientation={orientation} />;
 };
 
 export default ArrowIcon;
