@@ -1,34 +1,15 @@
 import { type Letter, Letters } from "./letter";
+import { MAX_WORD_LENGTH, MIN_WORD_LENGTH } from "../utils/word";
 
 type WordAsLetterArray = [Letter, ...Letter[]] & {
-	length:
-		| 2
-		| 3
-		| 4
-		| 5
-		| 6
-		| 7
-		| 8
-		| 9
-		| 10
-		| 11
-		| 12
-		| 13
-		| 14
-		| 15
-		| 16
-		| 17
-		| 18
-		| 19
-		| 20
-		| 21;
+	length: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
 };
 
 export class Word {
 	private readonly _word: WordAsLetterArray | null = null;
 
 	constructor(word: string) {
-		if (!(word.length >= 2 && word.length <= 21)) {
+		if (!(word.length >= MIN_WORD_LENGTH && word.length <= MAX_WORD_LENGTH)) {
 			throw Error("Invalid word length");
 		}
 

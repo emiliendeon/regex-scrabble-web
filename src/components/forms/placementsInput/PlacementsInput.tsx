@@ -2,6 +2,7 @@ import "./placementsInput.scss";
 
 import TextInput, { type TextInputProps } from "../textInput/TextInput";
 import { forwardRef, useMemo } from "react";
+import { MAX_WORD_LENGTH } from "../../../utils/word";
 
 type PlacementsInputProps = React.PropsWithRef<
 	Pick<TextInputProps, "placeholder" | "value" | "onChange"> & {
@@ -13,7 +14,7 @@ const PlacementsInput = forwardRef<HTMLInputElement, PlacementsInputProps>(
 	({ placeholder, value, onChange, label }, ref) => {
 		const addLetter = (input: string) => {
 			if (input) {
-				onChange(`${value}${input}`.substring(0, 21));
+				onChange(`${value}${input}`.substring(0, MAX_WORD_LENGTH));
 			}
 		};
 

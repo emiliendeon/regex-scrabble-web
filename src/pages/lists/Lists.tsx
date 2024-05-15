@@ -1,6 +1,7 @@
 import "./lists.scss";
 
 import { ListsActions, initialState } from "../../reducers/lists";
+import { MAX_WORD_LENGTH, MIN_WORD_LENGTH } from "../../utils/word";
 import { useDispatch, useSelector } from "../../store";
 import { useMemo, useState } from "react";
 
@@ -71,15 +72,15 @@ const Lists = () => {
 				<div className="length">
 					<NumberInput
 						label="Nombre de lettres minimum"
-						min={2}
-						max={21}
+						min={MIN_WORD_LENGTH}
+						max={MAX_WORD_LENGTH}
 						value={localLength[0]}
 						onChange={onChangeLocalMinLength}
 					/>
 					<NumberInput
 						label="Nombre de lettres maximum"
-						min={2}
-						max={21}
+						min={MIN_WORD_LENGTH}
+						max={MAX_WORD_LENGTH}
 						value={localLength[1]}
 						onChange={onChangeLocalMaxLength}
 					/>

@@ -3,6 +3,7 @@ import "./lettersInput.scss";
 import TextInput, { type TextInputProps } from "../textInput/TextInput";
 import { forwardRef, useMemo } from "react";
 import IconButton from "../iconButton/IconButton";
+import { MAX_WORD_LENGTH } from "../../../utils/word";
 import { useForwardedRef } from "../../../utils/react";
 
 type LettersInputProps = React.PropsWithRef<
@@ -22,7 +23,7 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 			const wildcardsCount = newValue.match(/\./g)?.length ?? 0;
 
 			if (input && (!maxWildcardsCount || wildcardsCount <= maxWildcardsCount)) {
-				onChange(newValue.substring(0, maxLettersCount ?? 21));
+				onChange(newValue.substring(0, maxLettersCount ?? MAX_WORD_LENGTH));
 			}
 		};
 

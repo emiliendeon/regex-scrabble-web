@@ -1,5 +1,6 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { type Letter } from "../types/letter";
+import { MIN_WORD_LENGTH } from "../utils/word";
 import { type Range } from "../types/number";
 
 export type ListsStore = {
@@ -8,7 +9,7 @@ export type ListsStore = {
 };
 
 export const initialState: ListsStore = {
-	length: [2, 2],
+	length: [MIN_WORD_LENGTH, MIN_WORD_LENGTH],
 	letters: [],
 };
 

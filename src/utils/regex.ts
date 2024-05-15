@@ -1,4 +1,5 @@
 import { type Letter, type LetterOrWildcard, Letters } from "../types/letter";
+import { MIN_WORD_LENGTH } from "./word";
 import { type Range } from "../types/number";
 import { combinations } from "./array";
 
@@ -58,7 +59,7 @@ const RegexBuilders = {
 
 	wordLength: ([min, max]: Partial<Range>, pattern?: string) =>
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-		`${pattern ?? "."}${min || max ? `{${min ?? 2},${max ?? ""}}` : ""}`,
+		`${pattern ?? "."}${min || max ? `{${min ?? MIN_WORD_LENGTH},${max ?? ""}}` : ""}`,
 
 	minWordLength: (min: number) => `(?=.{${min},})`,
 
