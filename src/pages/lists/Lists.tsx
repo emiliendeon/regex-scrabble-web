@@ -32,8 +32,12 @@ const Lists = () => {
 	}, [localLetters.length, isSearchButtonDebounced]);
 
 	const isResetButtonDisabled = useMemo(() => {
-		return areEqual(localLength, initialState.length) && localLetters.length === 0;
-	}, [localLength, localLetters.length]);
+		return (
+			areEqual(localLength, initialState.length) &&
+			localLetters.length === 0 &&
+			matchedWords.length === 0
+		);
+	}, [localLength, initialState.length, localLetters.length, matchedWords.length]);
 
 	const onChangeLocalMinLength = (value: number) => {
 		setLocalLength((prev) => [value, prev[1]]);

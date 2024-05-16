@@ -17,6 +17,9 @@ const PlacementsSlice = createSlice({
 		set: (state, { payload }: PayloadAction<Partial<PlacementsStore>>) => {
 			return { ...state, ...payload };
 		},
+		reset: () => {
+			return initialState;
+		},
 	},
 });
 

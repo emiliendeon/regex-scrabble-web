@@ -7,7 +7,7 @@ import { MAX_WORD_LENGTH } from "../../../utils/word";
 import { useForwardedRef } from "../../../utils/react";
 
 type LettersInputProps = React.PropsWithRef<
-	Pick<TextInputProps, "placeholder" | "value" | "onChange"> & {
+	Pick<TextInputProps, "placeholder" | "value" | "onChange" | "onReset"> & {
 		label?: string;
 		maxLettersCount?: number;
 		maxWildcardsCount?: number;
@@ -15,7 +15,7 @@ type LettersInputProps = React.PropsWithRef<
 >;
 
 const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
-	({ placeholder, value, onChange, label, maxLettersCount, maxWildcardsCount }, ref) => {
+	({ placeholder, value, onChange, onReset, label, maxLettersCount, maxWildcardsCount }, ref) => {
 		const localRef = useForwardedRef<HTMLInputElement>(ref);
 
 		const addLetter = (input: string) => {
@@ -37,6 +37,11 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 			onChange(value.slice(0, -1));
 		};
 
+		const onLocalReset = () => {
+			onChange("");
+			onReset?.();
+		};
+
 		const currentLetters = useMemo(() => {
 			return [...value];
 		}, [value]);
@@ -53,9 +58,7 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 					resetable
 					onChange={addLetter}
 					onDelete={removeLastLetter}
-					onReset={() => {
-						onChange("");
-					}}
+					onReset={onLocalReset}
 				/>
 				<div className="value">
 					{currentLetters.map((letter, index) => (

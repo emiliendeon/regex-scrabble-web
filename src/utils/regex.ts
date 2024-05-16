@@ -121,7 +121,7 @@ const Regex = {
 	subAnagram: (word: string) => {
 		const anagramCombinations = combinations<LetterOrWildcard>(
 			[...word] as LetterOrWildcard[],
-			2
+			MIN_WORD_LENGTH
 		);
 
 		const regexParts = anagramCombinations.map((anagramCombination) =>

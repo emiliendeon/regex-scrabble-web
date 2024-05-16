@@ -1,4 +1,5 @@
 import { type DictionaryStore } from "../reducers/dictionary";
+import { JOKERS_COUNT_SUPER } from "./game";
 
 type SortingOption = DictionaryStore["sorting"] & { label: string; title: string };
 
@@ -78,7 +79,7 @@ export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
 		label: "Tirage",
 		title: "Tous les mots possibles avec...",
 		inputType: "letters-input",
-		maxWildcardsCount: 4,
+		maxWildcardsCount: JOKERS_COUNT_SUPER,
 		autoSort: {
 			criterion: "LENGTH",
 			mode: "DESC",

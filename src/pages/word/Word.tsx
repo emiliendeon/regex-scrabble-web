@@ -8,6 +8,7 @@ import { DictionaryActions } from "../../reducers/dictionary";
 import { Helmet } from "react-helmet-async";
 import IconButton from "../../components/forms/iconButton/IconButton";
 import InvalidIcon from "../../components/icon/icons/InvalidIcon";
+import { MIN_WORD_LENGTH } from "../../utils/word";
 import ValidIcon from "../../components/icon/icons/ValidIcon";
 import WordSelectors from "../../selectors/word";
 import WordValues from "../../components/wordValues/WordValues";
@@ -110,7 +111,7 @@ const Word = () => {
 						<p className="none">Aucun</p>
 					)}
 				</div>
-				{wordData.word.length >= 3 && (
+				{wordData.word.length >= MIN_WORD_LENGTH + 1 && (
 					<>
 						<div className="prefix-of">
 							<h2>Préfixe de ?</h2>

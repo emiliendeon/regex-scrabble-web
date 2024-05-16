@@ -1,5 +1,6 @@
 import "./placements.scss";
 
+import { JOKERS_COUNT_SUPER, RACK_SIZE } from "../../utils/game";
 import { useDispatch, useSelector } from "../../store";
 import { useMemo, useState } from "react";
 
@@ -40,6 +41,10 @@ const Placements = () => {
 		}
 	};
 
+	const resetSearch = () => {
+		dispatch(PlacementsActions.reset());
+	};
+
 	return (
 		<div id="placements">
 			<SearchForm
@@ -50,13 +55,18 @@ const Placements = () => {
 					setSearchButtonDebounced(true);
 				}}
 			>
-				<PlacementsInput value={localConfiguration} onChange={setLocalConfiguration} />
+				<PlacementsInput
+					value={localConfiguration}
+					onChange={setLocalConfiguration}
+					onReset={resetSearch}
+				/>
 				<LettersInput
 					label="Lettres à placer"
-					maxLettersCount={7}
-					maxWildcardsCount={4}
+					maxLettersCount={RACK_SIZE}
+					maxWildcardsCount={JOKERS_COUNT_SUPER}
 					value={localLetters}
 					onChange={setLocalLetters}
+					onReset={resetSearch}
 				/>
 				<Button type="submit" label="Rechercher" disabled={isSearchButtonDisabled} />
 			</SearchForm>
