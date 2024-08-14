@@ -1,6 +1,8 @@
 import "./numberInput.scss";
 
-import { clamp } from "../../../utils/number";
+import { useEffect, useState } from "react";
+
+import { isNumberInRange } from "../../../utils/number";
 
 export type NumberInputProps = {
 	label?: string;
@@ -12,11 +14,31 @@ export type NumberInputProps = {
 };
 
 const NumberInput = ({ label, value, min, max, step, onChange }: NumberInputProps) => {
+	const [localValue, setLocalValue] = useState<NumberInputProps["value"] | "">(value);
+
+	useEffect(() => {
+		setLocalValue(value);
+	}, [value]);
+
+	const onLocalFocus = () => {
+		setLocalValue("");
+	};
+
+	const onLocalBlur = () => {
+		setLocalValue(value);
+	};
+
 	const onLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = parseInt(event.target.value, 10);
 
-		if (Number.isFinite(newValue)) {
-			onChange(clamp(newValue, min, max));
+		if (!Number.isFinite(newValue)) {
+			return;
+		}
+
+		if (isNumberInRange([min, max], newValue)) {
+			onChange(newValue);
+		} else {
+			setLocalValue(newValue);
 		}
 	};
 
@@ -28,7 +50,9 @@ const NumberInput = ({ label, value, min, max, step, onChange }: NumberInputProp
 				min={min}
 				max={max}
 				step={step ?? 1}
-				value={value ?? min}
+				value={localValue}
+				onFocus={onLocalFocus}
+				onBlur={onLocalBlur}
 				onChange={onLocalChange}
 			/>
 		</div>

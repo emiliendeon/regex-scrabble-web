@@ -168,13 +168,13 @@ const Regex = {
 			const configurationWildcardsCount = wordLength - fixedLettersCount;
 
 			const minNonConfigurationLettersCount = Math.max(
-				configurationWildcardsCount - drawWildcardsCount - commonLettersCount,
-				0
+				0,
+				configurationWildcardsCount - drawWildcardsCount - commonLettersCount
 			);
 
 			const minDrawLettersCount = Math.max(
-				configurationWildcardsCount - drawWildcardsCount + commonLettersCount,
-				0
+				0,
+				configurationWildcardsCount - drawWildcardsCount + commonLettersCount
 			);
 
 			regexParts.push(

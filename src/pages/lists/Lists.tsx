@@ -40,11 +40,11 @@ const Lists = () => {
 	}, [localLength, initialState.length, localLetters.length, matchedWords.length]);
 
 	const onChangeLocalMinLength = (value: number) => {
-		setLocalLength((prev) => [value, prev[1]]);
+		setLocalLength((prev) => [value, Math.max(value, prev[1])]);
 	};
 
 	const onChangeLocalMaxLength = (value: number) => {
-		setLocalLength((prev) => [prev[0], value]);
+		setLocalLength((prev) => [Math.min(value, prev[0]), value]);
 	};
 
 	const setSearch = () => {

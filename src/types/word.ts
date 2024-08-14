@@ -1,5 +1,6 @@
 import { type Letter, Letters } from "./letter";
 import { MAX_WORD_LENGTH, MIN_WORD_LENGTH } from "../utils/word";
+import { isNumberInRange } from "../utils/number";
 
 type WordAsLetterArray = [Letter, ...Letter[]] & {
 	length: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
@@ -9,7 +10,7 @@ export class Word {
 	private readonly _word: WordAsLetterArray | null = null;
 
 	constructor(word: string) {
-		if (!(word.length >= MIN_WORD_LENGTH && word.length <= MAX_WORD_LENGTH)) {
+		if (!isNumberInRange([MIN_WORD_LENGTH, MAX_WORD_LENGTH], word.length)) {
 			throw Error("Invalid word length");
 		}
 
