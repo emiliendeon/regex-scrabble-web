@@ -55,19 +55,21 @@ const Placements = () => {
 					setSearchButtonDebounced(true);
 				}}
 			>
-				<PlacementsInput
-					value={localConfiguration}
-					onChange={setLocalConfiguration}
-					onReset={resetSearch}
-				/>
-				<LettersInput
-					label="Lettres à placer"
-					maxLettersCount={RACK_SIZE}
-					maxWildcardsCount={JOKERS_COUNT_SUPER}
-					value={localLetters}
-					onChange={setLocalLetters}
-					onReset={resetSearch}
-				/>
+				<div className="inputs">
+					<PlacementsInput
+						value={localConfiguration}
+						onChange={setLocalConfiguration}
+						onReset={resetSearch}
+					/>
+					<LettersInput
+						label="Lettres à placer"
+						maxLettersCount={RACK_SIZE}
+						maxWildcardsCount={JOKERS_COUNT_SUPER}
+						value={localLetters}
+						onChange={setLocalLetters}
+						onReset={resetSearch}
+					/>
+				</div>
 				<Button type="submit" label="Rechercher" disabled={isSearchButtonDisabled} />
 			</SearchForm>
 		</div>

@@ -60,20 +60,22 @@ const LettersInput = forwardRef<HTMLInputElement, LettersInputProps>(
 					onDelete={removeLastLetter}
 					onReset={onLocalReset}
 				/>
-				<div className="value">
-					{currentLetters.map((letter, index) => (
-						<div key={index} className="letter">
-							<div className="content">{letter}</div>
-							<IconButton
-								icon="close"
-								label="Retirer cette lettre"
-								onClick={() => {
-									removeLetter(letter);
-								}}
-							/>
-						</div>
-					))}
-				</div>
+				{currentLetters.length >= 1 && (
+					<div className="value">
+						{currentLetters.map((letter, index) => (
+							<div key={index} className="letter">
+								<div className="content">{letter}</div>
+								<IconButton
+									icon="close"
+									label="Retirer cette lettre"
+									onClick={() => {
+										removeLetter(letter);
+									}}
+								/>
+							</div>
+						))}
+					</div>
+				)}
 			</label>
 		);
 	}

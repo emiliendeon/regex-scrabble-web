@@ -11,14 +11,21 @@
 			align-items: flex-start;
 			gap: 16px;
 
-			.letters-input {
-				.instruction {
-					color: #ffffff;
-				}
+			.inputs {
+				flex: 1;
+				display: flex;
+				align-items: flex-start;
+				gap: 16px;
 
-				.text-input {
-					.icon-button {
-						filter: invert(0.6);
+				.letters-input {
+					.instruction {
+						color: #ffffff;
+					}
+
+					.text-input {
+						.icon-button {
+							filter: invert(0.6);
+						}
 					}
 				}
 			}
@@ -42,10 +49,12 @@
 			align-items: stretch;
 
 			.main {
-				.placements-input,
-				.letters-input {
-					flex: 1;
-					width: auto;
+				.inputs {
+					.placements-input,
+					.letters-input {
+						flex: 1;
+						width: auto;
+					}
 				}
 			}
 		}
@@ -53,35 +62,40 @@
 
 	@media screen and (max-width: 767px) {
 		.search {
-			height: 320px;
+			height: 360px;
 
 			.main {
 				flex-direction: column;
 				align-items: stretch;
+				gap: 32px;
 
-				.letters-input {
-					margin-top: 16px;
+				.inputs {
+					flex-direction: column;
+					align-items: stretch;
+					gap: 24px;
 				}
 
 				button[type="submit"] {
 					align-self: center;
-					margin-top: 16px;
+					margin-top: 0;
 				}
 			}
 		}
 
 		.result {
-			height: calc(100% - 320px);
+			height: calc(100% - 360px);
 		}
 	}
 
 	@media screen and (max-width: 575px) {
 		.search {
-			height: 360px;
-		}
+			.main {
+				gap: 24px;
 
-		.result {
-			height: calc(100% - 360px);
+				.inputs {
+					gap: 16px;
+				}
+			}
 		}
 	}
 }

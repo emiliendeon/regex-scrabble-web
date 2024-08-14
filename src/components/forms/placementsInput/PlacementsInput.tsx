@@ -45,13 +45,15 @@ const PlacementsInput = forwardRef<HTMLInputElement, PlacementsInputProps>(
 					onDelete={removeLastLetter}
 					onReset={onLocalReset}
 				/>
-				<div className="value">
-					{currentLetters.map((letter, index) => (
-						<div key={index} className="letter">
-							{letter === "." ? "" : letter}
-						</div>
-					))}
-				</div>
+				{currentLetters.length >= 1 && (
+					<div className="value">
+						{currentLetters.map((letter, index) => (
+							<div key={index} className="letter">
+								{letter === "." ? "" : letter}
+							</div>
+						))}
+					</div>
+				)}
 			</label>
 		);
 	}

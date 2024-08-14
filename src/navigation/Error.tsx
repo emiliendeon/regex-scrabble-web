@@ -25,7 +25,7 @@ const Error = () => {
 				)}
 			</h1>
 			<div className="links">
-				<BackLink label="Retour à la page précédente" />
+				<BackLink label="Retour à la page précédente" showLabel />
 				<Link to="/">Retour à l&apos;accueil</Link>
 			</div>
 		</div>
