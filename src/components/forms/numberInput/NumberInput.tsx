@@ -20,26 +20,26 @@ const NumberInput = ({ label, value, min, max, step, onChange }: NumberInputProp
 		setLocalValue(value);
 	}, [value]);
 
-	const onLocalFocus = () => {
-		setLocalValue("");
-	};
-
 	const onLocalBlur = () => {
 		setLocalValue(value);
 	};
 
 	const onLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const newValue = parseInt(event.target.value, 10);
+		let newValue = parseInt(event.target.value, 10);
 
 		if (!Number.isFinite(newValue)) {
 			return;
 		}
 
+		if (max !== undefined && newValue > max) {
+			newValue %= 10;
+		}
+
 		if (isNumberInRange([min, max], newValue)) {
 			onChange(newValue);
-		} else {
-			setLocalValue(newValue);
 		}
+
+		setLocalValue(newValue);
 	};
 
 	return (
@@ -51,7 +51,6 @@ const NumberInput = ({ label, value, min, max, step, onChange }: NumberInputProp
 				max={max}
 				step={step ?? 1}
 				value={localValue}
-				onFocus={onLocalFocus}
 				onBlur={onLocalBlur}
 				onChange={onLocalChange}
 			/>
