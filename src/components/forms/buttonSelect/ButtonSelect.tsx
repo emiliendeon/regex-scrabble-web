@@ -15,6 +15,7 @@ export type ButtonSelectProps<T extends string> = PropsWithClassName<
 	{
 		label?: string;
 		options: Array<Option<T>>;
+		disabled?: boolean;
 	} & (
 		| {
 				multiple: true;
@@ -35,6 +36,7 @@ const ButtonSelect = <T extends string = string>({
 	className,
 	label,
 	options,
+	disabled,
 	multiple,
 	value,
 	values,
@@ -51,6 +53,10 @@ const ButtonSelect = <T extends string = string>({
 	);
 
 	const onLocalChange = (option: Option<T>) => {
+		if (disabled) {
+			return;
+		}
+
 		if (multiple) {
 			if (isOptionSelected(option)) {
 				onChange(values.filter((value) => value !== option.value));
@@ -75,7 +81,7 @@ const ButtonSelect = <T extends string = string>({
 							label={option.label}
 							title={option.title}
 							selected={selected}
-							disabled={selected && !multiple}
+							disabled={disabled || (selected && !multiple)}
 							onClick={() => {
 								onLocalChange(option);
 							}}

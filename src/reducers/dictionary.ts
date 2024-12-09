@@ -1,4 +1,5 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { type WordItem } from "../types/word";
 
 export type DictionaryStore = {
 	search: string;
@@ -6,6 +7,8 @@ export type DictionaryStore = {
 		criterion: "LENGTH" | "WORD" | "SCORE";
 		mode: "ASC" | "DESC";
 	};
+	isLoading: boolean;
+	matchedWords: WordItem[];
 };
 
 const initialState: DictionaryStore = {
@@ -14,6 +17,8 @@ const initialState: DictionaryStore = {
 		criterion: "LENGTH",
 		mode: "ASC",
 	},
+	isLoading: false,
+	matchedWords: [],
 };
 
 const DictionarySlice = createSlice({
@@ -31,6 +36,15 @@ const DictionarySlice = createSlice({
 		},
 		setSorting: (state, { payload }: PayloadAction<DictionaryStore["sorting"]>) => {
 			return { ...state, sorting: payload };
+		},
+		startLoading: (state) => {
+			return { ...state, isLoading: true };
+		},
+		setResult: (state, { payload }: PayloadAction<DictionaryStore["matchedWords"]>) => {
+			return { ...state, isLoading: false, matchedWords: payload };
+		},
+		resetResult: (state) => {
+			return { ...state, matchedWords: initialState.matchedWords };
 		},
 	},
 });

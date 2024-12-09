@@ -10,6 +10,7 @@ import { useState } from "react";
 export type SearchFormProps = React.PropsWithChildren<{
 	toggleableMobile?: boolean;
 	matchedWords: WordItem[];
+	isLoading?: boolean;
 	onSubmit: () => void;
 	onDebounce?: () => void;
 }>;
@@ -18,6 +19,7 @@ const SearchForm = ({
 	children,
 	toggleableMobile,
 	matchedWords,
+	isLoading,
 	onSubmit,
 	onDebounce,
 }: SearchFormProps) => {
@@ -28,6 +30,10 @@ const SearchForm = ({
 
 	const onLocalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		if (isLoading) {
+			return;
+		}
 
 		onDebounce?.();
 		navigate(location.pathname);
@@ -41,7 +47,7 @@ const SearchForm = ({
 			})}
 		>
 			<div className="search">
-				<form className="main" onSubmit={onLocalSubmit}>
+				<form className="main" aria-disabled={isLoading} onSubmit={onLocalSubmit}>
 					{children}
 				</form>
 				{toggleableMobile && (
@@ -60,7 +66,7 @@ const SearchForm = ({
 				)}
 			</div>
 			<div className="result">
-				<WordsList words={matchedWords} />
+				<WordsList words={matchedWords} isLoading={isLoading} />
 			</div>
 		</div>
 	);

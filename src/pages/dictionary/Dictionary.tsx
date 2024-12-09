@@ -20,8 +20,8 @@ const Dictionary = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const search = useSelector((state) => state.dictionary.search);
-	const matchedWords = useSelector((state) => WordsSelectors.bySearch(state));
+	const { search, sorting, isLoading, matchedWords } = useSelector((state) => state.dictionary);
+	const selectMatchedWords = useSelector((state) => WordsSelectors.bySearch(state));
 
 	const [localSearch, setLocalSearch] = useState(search);
 
@@ -33,16 +33,26 @@ const Dictionary = () => {
 	const helperTextInputRef = useRef<HTMLInputElement>(null);
 
 	const isSearchButtonDisabled = useMemo(() => {
-		return localSearch === "" || isSearchButtonDebounced;
-	}, [isSearchButtonDebounced, localSearch]);
+		return localSearch === "" || isSearchButtonDebounced || isLoading;
+	}, [isLoading, isSearchButtonDebounced, localSearch]);
 
 	const currentHelper = useMemo(() => {
 		return currentHelperId ? SearchHelpersList[currentHelperId] : null;
 	}, [currentHelperId]);
 
 	useEffect(() => {
+		if (search) {
+			selectMatchedWords(dispatch);
+		}
+	}, [search, sorting]);
+
+	useEffect(() => {
 		setSearchButtonDebounced(true);
 		setLocalSearch(search);
+
+		if (!search) {
+			dispatch(DictionaryActions.resetResult());
+		}
 	}, [search]);
 
 	const setSearch = () => {
@@ -80,11 +90,12 @@ const Dictionary = () => {
 
 	return (
 		<div id="dictionary">
-			<SearchForm matchedWords={matchedWords} onSubmit={setSearch}>
+			<SearchForm matchedWords={matchedWords} isLoading={isLoading} onSubmit={setSearch}>
 				<div className="input">
 					<TextInput
 						type="search"
 						placeholder="Saisir un mot ou un motif"
+						disabled={isLoading}
 						value={localSearch}
 						resetable
 						onChange={setLocalSearch}
@@ -97,8 +108,9 @@ const Dictionary = () => {
 					onChangeCurrentHelperId={(currentHelperId) => {
 						setCurrentHelperId(currentHelperId);
 					}}
+					disabled={isLoading}
 				/>
-				<Sorting />
+				<Sorting disabled={isLoading} />
 			</SearchForm>
 			<Modal
 				visible={Boolean(currentHelperId)}

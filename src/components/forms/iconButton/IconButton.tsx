@@ -29,9 +29,9 @@ type IconButtonProps = Omit<ButtonProps, "label"> &
 		  }
 	);
 
-const IconButton = ({ type, icon, orientation, label, onClick }: IconButtonProps) => {
+const IconButton = ({ type, icon, orientation, label, disabled, onClick }: IconButtonProps) => {
 	const onLocalClick = () => {
-		if (onClick) {
+		if (onClick && !disabled) {
 			onClick();
 		}
 	};
@@ -58,6 +58,7 @@ const IconButton = ({ type, icon, orientation, label, onClick }: IconButtonProps
 			className={clsx("icon-button", `${icon}-icon-button`)}
 			title={labelComputed}
 			aria-label={labelComputed}
+			disabled={disabled}
 			onClick={onLocalClick}
 		>
 			<IconComponent label={labelComputed} orientation={orientation} />

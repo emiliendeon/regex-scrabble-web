@@ -58,7 +58,6 @@ const RegexBuilders = {
 		`(${regexParts.map((regexPart) => `(${regexPart})`).join("|")})`,
 
 	wordLength: ([min, max]: Partial<Range>, pattern?: string) =>
-		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		`${pattern ?? "."}${min || max ? `{${min ?? MIN_WORD_LENGTH},${max ?? ""}}` : ""}`,
 
 	minWordLength: (min: number) => `(?=.{${min},})`,

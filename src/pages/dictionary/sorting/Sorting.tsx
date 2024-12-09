@@ -8,13 +8,21 @@ import ButtonSelect from "../../../components/forms/buttonSelect/ButtonSelect";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Sorting = () => {
+type SortingProps = {
+	disabled?: boolean;
+};
+
+const Sorting = ({ disabled }: SortingProps) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const sorting = useSelector((state) => state.dictionary.sorting);
 
 	const setSorting = (value: string) => {
+		if (disabled) {
+			return;
+		}
+
 		navigate("/");
 
 		const [criterion, mode] = value.split("_");
@@ -33,6 +41,7 @@ const Sorting = () => {
 					title: sortingOption.title,
 					value: formatSortingValue(sortingOption),
 				}))}
+				disabled={disabled}
 				value={sortingValue}
 				onChange={setSorting}
 			/>

@@ -9,6 +9,7 @@ export type TextInputProps = React.PropsWithRef<
 	{
 		type?: FormatType;
 		placeholder?: string;
+		disabled?: boolean;
 		value: string;
 		onChange: (value: string) => void;
 		onDelete?: () => void;
@@ -25,7 +26,7 @@ export type TextInputProps = React.PropsWithRef<
 >;
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-	({ type, placeholder, value, resetable, onChange, onDelete, onReset }, ref) => {
+	({ type, placeholder, disabled, value, resetable, onChange, onDelete, onReset }, ref) => {
 		const onLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = type ? formatInput[type](event.target.value) : event.target.value;
 			onChange(newValue);
@@ -51,12 +52,18 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 					ref={ref}
 					type="text"
 					placeholder={placeholder}
+					disabled={disabled}
 					value={value}
 					onChange={onLocalChange}
 					onKeyUp={onLocalKeyUp}
 				/>
 				{resetable && (
-					<IconButton icon="close" label="Réinitialiser" onClick={onLocalReset} />
+					<IconButton
+						icon="close"
+						label="Réinitialiser"
+						disabled={disabled}
+						onClick={onLocalReset}
+					/>
 				)}
 			</div>
 		);

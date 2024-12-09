@@ -9,10 +9,15 @@ import { useMemo } from "react";
 
 type WordsListProps = {
 	words: WordItemType[];
+	isLoading?: boolean;
 };
 
-const WordsList = ({ words }: WordsListProps) => {
+const WordsList = ({ words, isLoading }: WordsListProps) => {
 	const { hash } = useLocation();
+
+	const items = useMemo(() => {
+		return isLoading ? [] : words;
+	}, [words, isLoading]);
 
 	const wordsCount = useMemo(() => {
 		return words.length;
@@ -32,10 +37,17 @@ const WordsList = ({ words }: WordsListProps) => {
 	return (
 		<LazyList<WordItemType>
 			className="words-list"
-			items={words}
+			items={items}
 			headerComponent={() => (
 				<div className="count">
-					{wordsCount} {pluralize("mot", wordsCount)} {pluralize("trouvé", wordsCount)}
+					{isLoading ? (
+						<>Recherche en cours...</>
+					) : (
+						<>
+							{wordsCount} {pluralize("mot", wordsCount)}{" "}
+							{pluralize("trouvé", wordsCount)}
+						</>
+					)}
 				</div>
 			)}
 			itemRenderer={({ item }) => <WordItem wordItem={item} />}

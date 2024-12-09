@@ -1,10 +1,10 @@
-import { DefaultSortingOrder } from "../utils/dictionary";
-import { type DictionaryStore } from "../reducers/dictionary";
+import { type Dispatch, createSelector } from "@reduxjs/toolkit";
+import { DictionaryActions } from "../reducers/dictionary";
+import DictionaryWorker from "../workers/dictionary.ts?worker";
 import Regex from "../utils/regex";
 import { type Store } from "../store";
 import { WordComputers } from "../computers/word";
 import { type WordItem } from "../types/word";
-import { createSelector } from "@reduxjs/toolkit";
 import odsWords from "../assets/ods9";
 
 const getDictionarySearch = (state: Store) => state.dictionary.search;
@@ -17,51 +17,27 @@ const getPlacementsConfiguration = (state: Store) => state.placements.configurat
 const getPlacementsLetters = (state: Store) => state.placements.letters;
 
 const WordsSelectors = {
-	bySearch: createSelector(
-		[getDictionarySearch, getDictionarySorting],
-		(search, sorting): WordItem[] => {
+	bySearch: createSelector([getDictionarySearch, getDictionarySorting], (search, sorting) => {
+		return (dispatch: Dispatch) => {
 			try {
-				const regex = new RegExp(`^${search}$`, "i");
+				dispatch(DictionaryActions.startLoading());
 
-				const words = odsWords
-					.filter((odsWord) => regex.test(odsWord))
-					.map((odsWord) => ({
-						word: odsWord,
-						...WordComputers.values(odsWord),
-					})) as WordItem[];
+				const worker = new DictionaryWorker();
 
-				const sort: {
-					[K in DictionaryStore["sorting"]["criterion"]]: (
-						a: WordItem,
-						b: WordItem
-					) => number;
-				} = {
-					LENGTH: (a, b) => a.length - b.length,
-					WORD: (a, b) => (a.word < b.word ? -1 : 1),
-					SCORE: (a, b) => a.score - b.score,
-				};
-
-				return words.sort((a, b) => {
-					let cmp = sort[sorting.criterion](a, b);
-					const primarySortingCriterionUsed = cmp !== 0;
-
-					if (!primarySortingCriterionUsed) {
-						const secondarySortingCriteria = DefaultSortingOrder.filter(
-							(sortingCriterion) => sortingCriterion !== sorting.criterion
-						);
-
-						for (let i = 0; cmp === 0 && i < secondarySortingCriteria.length; i++) {
-							cmp = sort[secondarySortingCriteria[i]](a, b);
-						}
-					}
-
-					return sorting.mode === "DESC" && primarySortingCriterionUsed ? -cmp : cmp;
+				worker.postMessage({
+					type: "COMPUTE_MATCHED_WORDS",
+					payload: { search, sorting },
 				});
+
+				worker.onmessage = (event: { data: WordItem[] }) => {
+					dispatch(DictionaryActions.setResult(event.data));
+					worker.terminate();
+				};
 			} catch (e) {
 				return [];
 			}
-		}
-	),
+		};
+	}),
 
 	byList: createSelector([getListsLength, getListsLetters], (length, letters): WordItem[] => {
 		try {

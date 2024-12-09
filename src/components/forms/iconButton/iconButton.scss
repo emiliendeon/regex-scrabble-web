@@ -12,6 +12,12 @@
 		filter: opacity(0.8);
 	}
 
+	&:disabled {
+		opacity: 0.8;
+		cursor: default;
+		pointer-events: none;
+	}
+
 	.icon {
 		width: 100%;
 		height: 100%;
