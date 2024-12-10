@@ -33,6 +33,11 @@ const WordsSelectors = {
 					dispatch(DictionaryActions.setResult(event.data));
 					worker.terminate();
 				};
+
+				worker.onerror = () => {
+					worker.terminate();
+					throw new Error();
+				};
 			} catch (e) {
 				return [];
 			}

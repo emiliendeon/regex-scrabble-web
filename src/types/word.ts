@@ -11,12 +11,12 @@ export class Word {
 
 	constructor(word: string) {
 		if (!isNumberInRange([MIN_WORD_LENGTH, MAX_WORD_LENGTH], word.length)) {
-			throw Error("Invalid word length");
+			throw new Error("Invalid word length");
 		}
 
 		for (const letter of word) {
 			if (!(Letters as readonly string[]).includes(letter)) {
-				throw Error("Invalid letter");
+				throw new Error("Invalid letter");
 			}
 		}
 
