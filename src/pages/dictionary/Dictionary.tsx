@@ -40,6 +40,10 @@ const Dictionary = () => {
 		return currentHelperId ? SearchHelpersList[currentHelperId] : null;
 	}, [currentHelperId]);
 
+	const canValidateHelper = useMemo(() => {
+		return helperInput.length >= (currentHelper?.minInputLength ?? 1);
+	}, [currentHelper, helperInput]);
+
 	useEffect(() => {
 		if (search) {
 			selectMatchedWords(dispatch);
@@ -73,19 +77,17 @@ const Dictionary = () => {
 	};
 
 	const onValidateHelper = () => {
-		if (helperInput) {
-			navigate("/");
+		navigate("/");
 
-			const search = Regex[currentHelperId as SearchHelperId](helperInput);
-			dispatch(
-				DictionaryActions.set({
-					search,
-					...(currentHelper?.autoSort ? { sorting: currentHelper.autoSort } : {}),
-				})
-			);
+		const search = Regex[currentHelperId as SearchHelperId](helperInput);
+		dispatch(
+			DictionaryActions.set({
+				search,
+				...(currentHelper?.autoSort ? { sorting: currentHelper.autoSort } : {}),
+			})
+		);
 
-			onCloseHelper();
-		}
+		onCloseHelper();
 	};
 
 	return (
@@ -115,6 +117,7 @@ const Dictionary = () => {
 			<Modal
 				visible={Boolean(currentHelperId)}
 				title={currentHelper?.title}
+				canValidate={canValidateHelper}
 				onLoad={onLoadHelper}
 				onClose={onCloseHelper}
 				onValidate={onValidateHelper}

@@ -7,12 +7,21 @@ import { useEffect } from "react";
 type ModalProps = React.PropsWithChildren<{
 	visible?: boolean;
 	title?: string;
+	canValidate: boolean;
 	onLoad?: () => void;
 	onClose: () => void;
 	onValidate?: () => void;
 }>;
 
-const Modal = ({ children, visible, title, onLoad, onClose, onValidate }: ModalProps) => {
+const Modal = ({
+	children,
+	visible,
+	title,
+	canValidate,
+	onLoad,
+	onClose,
+	onValidate,
+}: ModalProps) => {
 	useEffect(() => {
 		if (visible && onLoad) {
 			onLoad();
@@ -26,7 +35,7 @@ const Modal = ({ children, visible, title, onLoad, onClose, onValidate }: ModalP
 	const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (onValidate) {
+		if (canValidate && onValidate) {
 			onValidate();
 		}
 	};
@@ -42,7 +51,12 @@ const Modal = ({ children, visible, title, onLoad, onClose, onValidate }: ModalP
 					{title && <div className="title">{title}</div>}
 					{children}
 					{onValidate && (
-						<Button className="modal-validate-button" type="submit" label="Valider" />
+						<Button
+							className="modal-validate-button"
+							type="submit"
+							label="Valider"
+							disabled={!canValidate}
+						/>
 					)}
 					<IconButton icon="close" onClick={onClose} />
 				</form>

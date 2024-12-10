@@ -23,5 +23,5 @@ export const formatInput: Formatters = {
 			.replace(/[ÝỲŶŸ]/g, "Y")
 			.replace(/[Æ]/g, "AE")
 			.replace(/[Œ]/g, "OE")
-			.replace(/[^A-Z0-9,.*+:=<>|\\^#?!(){}[\]]/g, ""),
+			.replace(/[^A-Z0-9,.*+\-:=<>|\\^#?!(){}[\]]/g, ""),
 };

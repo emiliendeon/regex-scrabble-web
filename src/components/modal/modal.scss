@@ -47,6 +47,10 @@
 				width: 16px;
 				height: 16px;
 				filter: invert(0.6);
+
+				&:hover {
+					filter: invert(0.4);
+				}
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 import { type DictionaryStore } from "../reducers/dictionary";
 import { JOKERS_COUNT_SUPER } from "./game";
+import { MIN_WORD_LENGTH } from "./word";
 
 type SortingOption = DictionaryStore["sorting"] & { label: string; title: string };
 
@@ -58,6 +59,7 @@ type SearchHelper = {
 	label: string;
 	title: string;
 	inputType?: "letters-input";
+	minInputLength?: number;
 	maxWildcardsCount?: number;
 	autoSort?: DictionaryStore["sorting"];
 };
@@ -79,6 +81,7 @@ export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
 		label: "Tirage",
 		title: "Tous les mots possibles avec...",
 		inputType: "letters-input",
+		minInputLength: MIN_WORD_LENGTH,
 		maxWildcardsCount: JOKERS_COUNT_SUPER,
 		autoSort: {
 			criterion: "LENGTH",
@@ -89,5 +92,6 @@ export const SearchHelpers: { [K in SearchHelperId]: SearchHelper } = {
 		label: "Anagrammes",
 		title: "Anagrammes",
 		inputType: "letters-input",
+		minInputLength: MIN_WORD_LENGTH,
 	},
 };

@@ -25,6 +25,10 @@
 					.text-input {
 						.icon-button {
 							filter: invert(0.6);
+
+							&:hover {
+								filter: invert(0.4);
+							}
 						}
 					}
 				}
