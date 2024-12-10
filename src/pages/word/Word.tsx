@@ -23,18 +23,18 @@ const Word = () => {
 
 	const wordData = useSelector((state) => WordSelectors.wordData(state, word));
 
-	if (!wordData) {
-		return <Navigate to={`/error?error-nonexistent-word=${word ?? ""}`} replace />;
-	}
-
 	const backLink = useMemo(() => {
 		const referer = searchParams.get("referer");
 
-		if (!referer || /^\/mot\//.test(referer)) {
+		if (!wordData || !referer || /^\/mot\//.test(referer)) {
 			return undefined;
 		}
 		return `${referer}#mot-${wordData.word.toLowerCase()}`;
-	}, [searchParams]);
+	}, [searchParams, wordData]);
+
+	if (!wordData) {
+		return <Navigate to={`/error?error-nonexistent-word=${word ?? ""}`} replace />;
+	}
 
 	const goToDictionary = (search: string) => {
 		dispatch(DictionaryActions.setSearch(search));
