@@ -1,7 +1,6 @@
 import { type Letter, type LetterOrWildcard, Letters } from "../types/letter";
 import { MIN_WORD_LENGTH } from "./word";
 import { type Range } from "../types/number";
-import { combinations } from "./array";
 
 type LettersCountsKey<IncludeWildcards extends boolean> = IncludeWildcards extends true
 	? LetterOrWildcard
@@ -54,8 +53,16 @@ const computeUniqueLetters = <IncludeWildcards extends boolean = false>(
 };
 
 const RegexBuilders = {
-	conjunction: (regexParts: string[]) =>
-		`(${regexParts.map((regexPart) => `(${regexPart})`).join("|")})`,
+	disjunction: (regexParts: Array<string | null>) =>
+		`(${regexParts
+			.filter((regexPart) => Boolean(regexPart))
+			.map((regexPart) => `(${regexPart as string})`)
+			.join("|")})`,
+
+	lettersDisjunction: (letters: string) => `[${computeUniqueLetters(letters).join("")}]`,
+
+	foreignLettersDisjunction: (foreignLetters: string) =>
+		`[^${computeUniqueLetters(foreignLetters).join("")}]`,
 
 	wordLength: ([min, max]: Partial<Range>, pattern?: string) =>
 		`${pattern ?? "."}${min || max ? `{${min ?? MIN_WORD_LENGTH},${max ?? ""}}` : ""}`,
@@ -65,21 +72,23 @@ const RegexBuilders = {
 	maxWordLength: (max: number) => `(?!.{${max + 1},})`,
 
 	minLettersCount: (letters: string, count: number) =>
-		`(?=(.*[${computeUniqueLetters(letters).join("")}]){${count},})`,
+		`(?=(.*${RegexBuilders.lettersDisjunction(letters)}){${count},})`,
 
 	maxLettersCount: (letters: string, count: number) =>
-		`(?!(.*[${computeUniqueLetters(letters).join("")}]){${count + 1},})`,
+		`(?!(.*${RegexBuilders.lettersDisjunction(letters)}){${count + 1},})`,
 
 	minForeignLettersCount: (foreignFromLetters: string, count: number) =>
-		`(?=(.*[^${computeUniqueLetters(foreignFromLetters).join("")}]){${count},})`,
+		`(?=(.*${RegexBuilders.foreignLettersDisjunction(foreignFromLetters)}){${count},})`,
 
 	maxForeignLettersCount: (foreignFromLetters: string, count: number) =>
-		`(?!(.*[^${computeUniqueLetters(foreignFromLetters).join("")}]){${count + 1},})`,
+		`(?!(.*${RegexBuilders.foreignLettersDisjunction(foreignFromLetters)}){${count + 1},})`,
 
 	minLettersCounts: (lettersCounts: LettersCounts<false>) => {
 		let regex = "";
 
-		for (const [letter, count] of Object.entries(lettersCounts)) {
+		for (const [letter, count] of Object.entries(lettersCounts).filter(
+			([letter]) => letter !== "."
+		)) {
 			regex += `(?=(.*${letter}){${count}})`;
 		}
 
@@ -118,16 +127,26 @@ const Regex = {
 	},
 
 	subAnagram: (word: string) => {
-		const anagramCombinations = combinations<LetterOrWildcard>(
-			[...word] as LetterOrWildcard[],
-			MIN_WORD_LENGTH
-		);
+		const lettersCounts = computeLettersCounts(word, true);
+		const wildcardsCount = lettersCounts["."] ?? 0;
 
-		const regexParts = anagramCombinations.map((anagramCombination) =>
-			Regex.anagram(anagramCombination.join(""))
-		);
-
-		return RegexBuilders.conjunction(regexParts);
+		return RegexBuilders.disjunction([
+			word.length - wildcardsCount >= MIN_WORD_LENGTH
+				? [
+						RegexBuilders.maxLettersCounts(lettersCounts, wildcardsCount),
+						RegexBuilders.wordLength(
+							[MIN_WORD_LENGTH, word.length - wildcardsCount],
+							RegexBuilders.lettersDisjunction(word)
+						),
+				  ].join("")
+				: null,
+			wildcardsCount >= 1
+				? [
+						RegexBuilders.minLettersCounts(lettersCounts),
+						RegexBuilders.wordLength([word.length - wildcardsCount + 1, word.length]),
+				  ].join("")
+				: null,
+		]);
 	},
 
 	lengthAndConjunctiveLetters: (length: Range, letters: Letter[]) => {
@@ -191,7 +210,7 @@ const Regex = {
 			);
 		}
 
-		return RegexBuilders.conjunction(regexParts);
+		return RegexBuilders.disjunction(regexParts);
 	},
 };
 
