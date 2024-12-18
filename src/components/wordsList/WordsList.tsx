@@ -4,7 +4,7 @@ import LazyList from "../lazyList/LazyList";
 import WordItem from "../wordItem/WordItem";
 import { type WordItem as WordItemType } from "../../types/word";
 import { pluralize } from "../../utils/string";
-import { useLocation } from "react-router-dom";
+import { useHashWord } from "../../utils/navigation";
 import { useMemo } from "react";
 
 type WordsListProps = {
@@ -13,7 +13,7 @@ type WordsListProps = {
 };
 
 const WordsList = ({ words, isLoading }: WordsListProps) => {
-	const { hash } = useLocation();
+	const hashWord = useHashWord();
 
 	const items = useMemo(() => {
 		return isLoading ? [] : words;
@@ -24,15 +24,11 @@ const WordsList = ({ words, isLoading }: WordsListProps) => {
 	}, [words]);
 
 	const currentIndex = useMemo(() => {
-		if (!hash) {
-			return undefined;
-		}
-		const [, hashWord] = hash.split("-");
 		if (!hashWord) {
 			return undefined;
 		}
 		return words.findIndex((word) => word.word === hashWord.toUpperCase());
-	}, [words, hash]);
+	}, [words, hashWord]);
 
 	return (
 		<LazyList<WordItemType>

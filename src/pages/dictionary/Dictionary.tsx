@@ -3,6 +3,7 @@ import "./dictionary.scss";
 import { type SearchHelperId, SearchHelpers as SearchHelpersList } from "../../utils/dictionary";
 import { useDispatch, useSelector } from "../../store";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useHashWord, useReferer } from "../../utils/navigation";
 import Button from "../../components/forms/button/Button";
 import { DictionaryActions } from "../../reducers/dictionary";
 import LettersInput from "../../components/forms/lettersInput/LettersInput";
@@ -17,6 +18,9 @@ import { useDebounce } from "../../utils/react";
 import { useNavigate } from "react-router-dom";
 
 const Dictionary = () => {
+	const referer = useReferer();
+	const hashWord = useHashWord();
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -45,7 +49,7 @@ const Dictionary = () => {
 	}, [currentHelper, helperInput]);
 
 	useEffect(() => {
-		if (search) {
+		if (search && !(referer || hashWord)) {
 			selectMatchedWords(dispatch);
 		}
 	}, [search, sorting]);

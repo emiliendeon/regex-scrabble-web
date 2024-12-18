@@ -1,6 +1,6 @@
 import "./word.scss";
 
-import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "../../store";
 
 import BackLink from "../../components/backLink/BackLink";
@@ -13,10 +13,11 @@ import ValidIcon from "../../components/icon/icons/ValidIcon";
 import WordSelectors from "../../selectors/word";
 import WordValues from "../../components/wordValues/WordValues";
 import { useMemo } from "react";
+import { useReferer } from "../../utils/navigation";
 
 const Word = () => {
 	const { word } = useParams();
-	const [searchParams] = useSearchParams();
+	const referer = useReferer();
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -24,13 +25,11 @@ const Word = () => {
 	const wordData = useSelector((state) => WordSelectors.wordData(state, word));
 
 	const backLink = useMemo(() => {
-		const referer = searchParams.get("referer");
-
 		if (!wordData || !referer || /^\/mot\//.test(referer)) {
 			return undefined;
 		}
 		return `${referer}#mot-${wordData.word.toLowerCase()}`;
-	}, [searchParams, wordData]);
+	}, [referer, wordData]);
 
 	if (!wordData) {
 		return <Navigate to={`/error?error-nonexistent-word=${word ?? ""}`} replace />;

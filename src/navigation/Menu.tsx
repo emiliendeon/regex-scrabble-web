@@ -18,7 +18,7 @@ const Menu = () => {
 	return (
 		<div id="menu" className={clsx({ "visible-mobile": isVisibleMobile })}>
 			<nav>
-				<NavLink to="/">Dictionnaire</NavLink>
+				<NavLink to={`/?referer=${pathname}`}>Dictionnaire</NavLink>
 				<NavLink to="/listes">Listes</NavLink>
 				<NavLink to="/placements">Placements</NavLink>
 			</nav>
