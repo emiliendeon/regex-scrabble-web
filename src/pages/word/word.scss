@@ -48,9 +48,10 @@
 				margin-bottom: 8px;
 
 				.icon-button {
-					width: 12px;
-					height: 12px;
-					margin-left: 12px;
+					width: 24px;
+					height: 24px;
+					margin-left: 6px;
+					padding: 6px;
 					opacity: 0.4;
 					transform: translateY(2px);
 				}
@@ -119,13 +120,12 @@
 
 	@media screen and (max-width: 767px) {
 		.links {
-			top: 30px;
-			left: 16px;
+			top: 26px;
+			left: 12px;
 			gap: 8px;
 
-			> * {
-				width: 16px;
-				height: 16px;
+			.icon-button {
+				padding: 4px;
 			}
 		}
 
