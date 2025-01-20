@@ -5,6 +5,7 @@ import Regex from "../utils/regex";
 import { type Store } from "../store";
 import { WordComputers } from "../computers/word";
 import { type WordItem } from "../types/word";
+import { compare } from "../utils/word";
 import odsWords from "../assets/ods9";
 
 const getDictionarySearch = (state: Store) => state.dictionary.search;
@@ -62,7 +63,7 @@ const WordsSelectors = {
 					...WordComputers.values(odsWord),
 				})) as WordItem[];
 
-			return words;
+			return words.sort(compare.LENGTH);
 		} catch (e) {
 			return [];
 		}
@@ -81,7 +82,7 @@ const WordsSelectors = {
 						...WordComputers.values(odsWord),
 					})) as WordItem[];
 
-				return words.sort((a, b) => b.score - a.score);
+				return words.sort((a, b) => -compare.SCORE(a, b));
 			} catch (e) {
 				return [];
 			}

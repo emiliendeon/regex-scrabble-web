@@ -2,6 +2,7 @@ import { DefaultSortingOrder } from "../utils/dictionary";
 import { type DictionaryStore } from "../reducers/dictionary";
 import { WordComputers } from "../computers/word";
 import { type WordItem } from "../types/word";
+import { compare } from "../utils/word";
 import odsWords from "../assets/ods9";
 
 const computeMatchedWords = (
@@ -18,16 +19,8 @@ const computeMatchedWords = (
 				...WordComputers.values(odsWord),
 			})) as WordItem[];
 
-		const sort: {
-			[K in DictionaryStore["sorting"]["criterion"]]: (a: WordItem, b: WordItem) => number;
-		} = {
-			LENGTH: (a, b) => a.length - b.length,
-			WORD: (a, b) => (a.word < b.word ? -1 : 1),
-			SCORE: (a, b) => a.score - b.score,
-		};
-
 		return words.sort((a, b) => {
-			let cmp = sort[sorting.criterion](a, b);
+			let cmp = compare[sorting.criterion](a, b);
 			const primarySortingCriterionUsed = cmp !== 0;
 
 			if (!primarySortingCriterionUsed) {
@@ -36,7 +29,7 @@ const computeMatchedWords = (
 				);
 
 				for (let i = 0; cmp === 0 && i < secondarySortingCriteria.length; i++) {
-					cmp = sort[secondarySortingCriteria[i]](a, b);
+					cmp = compare[secondarySortingCriteria[i]](a, b);
 				}
 			}
 
