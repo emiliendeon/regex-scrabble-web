@@ -10,7 +10,7 @@ const computeMatchedWords = (
 	sorting: DictionaryStore["sorting"]
 ): WordItem[] => {
 	try {
-		const regex = new RegExp(`^(${search})$`, "i");
+		const regex = new RegExp(`^(?:${search})$`, "i");
 
 		const words = odsWords
 			.filter((odsWord) => regex.test(odsWord))
